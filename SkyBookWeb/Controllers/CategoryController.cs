@@ -13,7 +13,7 @@ namespace SkyBookWeb.Controllers
         }
         public IActionResult Index()
         {
-            var category = _dbContext.Categories.ToList();
+            var category = _dbContext.Categories.OrderBy(x => x.Order).ToList();
             return View(category);
         }
     }
