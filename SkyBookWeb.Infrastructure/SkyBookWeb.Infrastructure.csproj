@@ -16,9 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="SkyBookWeb.Core">
-      <HintPath>..\SkyBookWeb.Core\bin\Debug\net8.0\SkyBookWeb.Core.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\SkyBookWeb.Core\SkyBookWeb.Core.csproj" />
   </ItemGroup>
 
 </Project>

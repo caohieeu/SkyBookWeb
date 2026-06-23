@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SkyBookWeb.Infrastructure.Data;
+using SkyBookWeb.Infrastructure.SeedData;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,27 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 });
 
 var app = builder.Build();
+
+
+// Db Migration
+using(var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var logger = services.GetService<ILoggerFactory>();
+    try
+    {
+        var context = services.GetService<ApplicationDBContext>();
+        if(logger != null && context != null)
+        {
+            await DataContextSeed.SeedAsync(context, logger);
+        }
+
+    } catch(Exception ex)
+    {
+        var loggerDbContext = logger.CreateLogger<ApplicationDBContext>();
+        loggerDbContext.LogError(ex, "Something went wrong with migration");
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
