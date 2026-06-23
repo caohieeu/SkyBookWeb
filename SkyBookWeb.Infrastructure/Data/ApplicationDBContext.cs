@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SkyBookWeb.Models;
+using SkyBookWeb.Core.Entities;
 
-namespace SkyBookWeb.Data
+namespace SkyBookWeb.Infrastructure.Data
 {
     public class ApplicationDBContext : DbContext
     {
@@ -13,9 +13,9 @@ namespace SkyBookWeb.Data
             //base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Category>().HasData(
-                new Category { Id = 1, Name = "Action", Order = 1 },
-                new Category { Id = 2, Name = "Drama", Order = 2 },
-                new Category { Id = 3, Name = "Romance", Order = 3 }
+                new Category { Id = 1, Name = "Action", DisplayOrder = 1 },
+                new Category { Id = 2, Name = "Drama", DisplayOrder = 2 },
+                new Category { Id = 3, Name = "Romance", DisplayOrder = 3 }
             );
         }
     }

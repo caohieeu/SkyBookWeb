@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using SkyBookWeb.Data;
+using SkyBookWeb.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

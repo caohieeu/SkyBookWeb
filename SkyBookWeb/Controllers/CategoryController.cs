@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SkyBookWeb.Data;
+using SkyBookWeb.Infrastructure.Data;
 
 namespace SkyBookWeb.Controllers
 {
@@ -13,7 +12,7 @@ namespace SkyBookWeb.Controllers
         }
         public IActionResult Index()
         {
-            var category = _dbContext.Categories.OrderBy(x => x.Order).ToList();
+            var category = _dbContext.Categories.OrderBy(x => x.DisplayOrder).ToList();
             return View(category);
         }
     }

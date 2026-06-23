@@ -5,6 +5,12 @@ VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyBookWeb", "SkyBookWeb\SkyBookWeb.csproj", "{19D971EB-8D95-47F3-BE61-03BD5FC056D7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyBookWeb.Core", "SkyBookWeb.Core\SkyBookWeb.Core.csproj", "{5E431B4A-4C1C-422C-A2C0-0B6CA525A2E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyBookWeb.Application", "SkyBookWeb.Application\SkyBookWeb.Application.csproj", "{C446139A-AC64-4BFB-AF72-796DF819127A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyBookWeb.Infrastructure", "SkyBookWeb.Infrastructure\SkyBookWeb.Infrastructure.csproj", "{C03C4F10-D5AC-4831-B899-C260DFE34149}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +21,18 @@ Global
 		{19D971EB-8D95-47F3-BE61-03BD5FC056D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19D971EB-8D95-47F3-BE61-03BD5FC056D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19D971EB-8D95-47F3-BE61-03BD5FC056D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E431B4A-4C1C-422C-A2C0-0B6CA525A2E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E431B4A-4C1C-422C-A2C0-0B6CA525A2E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E431B4A-4C1C-422C-A2C0-0B6CA525A2E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E431B4A-4C1C-422C-A2C0-0B6CA525A2E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C446139A-AC64-4BFB-AF72-796DF819127A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C446139A-AC64-4BFB-AF72-796DF819127A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C446139A-AC64-4BFB-AF72-796DF819127A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C446139A-AC64-4BFB-AF72-796DF819127A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C03C4F10-D5AC-4831-B899-C260DFE34149}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C03C4F10-D5AC-4831-B899-C260DFE34149}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C03C4F10-D5AC-4831-B899-C260DFE34149}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C03C4F10-D5AC-4831-B899-C260DFE34149}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
