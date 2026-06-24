@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace SkyBookWeb.Core.Entities
 {
-    public class Category : BaseEntity
+    public class BaseEntity
     {
-        public string Name { get; set; } = string.Empty;
-        public int DisplayOrder { get; set; }
+        [Key]
+        public int Id { get; set; }
     }
 }

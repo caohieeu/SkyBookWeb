@@ -1,19 +1,26 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using SkyBookWeb.Core.Entities;
+using SkyBookWeb.Core.Specifications;
 using SkyBookWeb.Infrastructure.Data;
 
 namespace SkyBookWeb.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ApplicationDBContext _dbContext;
-        public CategoryController(ApplicationDBContext dbContext)
+        private readonly IGenericRepository<Category> _categoryRepository;
+        public CategoryController(IGenericRepository<Category> categoryRepository)
         {
-            _dbContext = dbContext;
+            _categoryRepository = categoryRepository;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var category = _dbContext.Categories.OrderBy(x => x.DisplayOrder).ToList();
+            var category = await _categoryRepository.GetAllAsync();
             return View(category);
+        }
+        public IActionResult Create()
+        {
+            return View();
         }
     }
 }

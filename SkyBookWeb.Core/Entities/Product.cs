@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SkyBookWeb.Core.Entities
 {
-    public class Product
+    public class Product :BaseEntity
     {
     }
 }
