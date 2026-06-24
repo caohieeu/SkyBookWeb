@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using SkyBookWeb.Extensions;
 using SkyBookWeb.Infrastructure.Data;
 using SkyBookWeb.Infrastructure.SeedData;
 
@@ -11,6 +12,9 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("SQLConnection"));
 });
+
+//Register services
+builder.Services.AddApplicationServices();
 
 var app = builder.Build();
 

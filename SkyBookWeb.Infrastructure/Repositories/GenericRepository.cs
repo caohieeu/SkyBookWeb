@@ -22,6 +22,7 @@ namespace SkyBookWeb.Infrastructure.Repositories
 
             _loggerFactory = loggerFactory;
         }
+
         public async Task<IEnumerable<T>> GetAllAsync()
         {
             try
@@ -35,6 +36,11 @@ namespace SkyBookWeb.Infrastructure.Repositories
 
                 return null;
             }
+        }
+
+        public void Add(T entity)
+        {
+            _dbContext.Add(entity);
         }
     }
 }
