@@ -9,17 +9,15 @@ namespace SkyBookWeb.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly IGenericRepository<Category> _categoryRepository;
         private readonly IUnitOfWork _unitOfWork;
         public CategoryController(IGenericRepository<Category> categoryRepository,
             IUnitOfWork unitOfWork)
         {
-            _categoryRepository = categoryRepository;
             _unitOfWork = unitOfWork;
         }
         public async Task<IActionResult> Index()
         {
-            var categories = await _categoryRepository.GetAllAsync();
+            var categories = await _unitOfWork.Repository<Category>().GetAllAsync();
             return View(categories);
         }
         public IActionResult Create()
@@ -33,7 +31,7 @@ namespace SkyBookWeb.Controllers
         {
             if(ModelState.IsValid)
             {
-                _categoryRepository.Add(category);
+                _unitOfWork.Repository<Category>().Add(category);
                 if (await _unitOfWork.Complete())
                 {
                     return RedirectToAction("Index");

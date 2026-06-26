@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SkyBookWeb.Core.Interfaces
+namespace SkyBookWeb.Core.Specifications
 {
     public class BaseSpecification<T> : ISpecifications<T>
     {
@@ -20,7 +20,7 @@ namespace SkyBookWeb.Core.Interfaces
         public BaseSpecification() { }
         public BaseSpecification(Expression<Func<T, bool>> criteria)
         {
-            this.Criteria = criteria;
+            Criteria = criteria;
         }
 
         public int Skip { get; private set; }

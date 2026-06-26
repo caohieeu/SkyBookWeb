@@ -42,5 +42,15 @@ namespace SkyBookWeb.Infrastructure.Repositories
         {
             _dbContext.Add(entity);
         }
+
+        public void Update(T entity)
+        {
+            _dbContext.Entry<T>(entity).State = EntityState.Modified;
+        }
+
+        public bool Delete(T entity)
+        {
+            return true;
+        }
     }
 }

@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SkyBookWeb.Core.Interfaces
+namespace SkyBookWeb.Core.Specifications
 {
     public interface ISpecifications<T>
     {

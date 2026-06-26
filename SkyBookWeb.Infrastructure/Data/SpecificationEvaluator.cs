@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SkyBookWeb.Core.Entities;
-using SkyBookWeb.Core.Interfaces;
+using SkyBookWeb.Core.Specifications;
 
 namespace SkyBookWeb.Infrastructure.Data
 {

@@ -11,5 +11,7 @@ namespace SkyBookWeb.Core.Specifications
     {
         Task<IEnumerable<T>> GetAllAsync();
         void Add(T entity);
+        void Update(T entity);
+        bool Delete(T entity);
     }
 }
