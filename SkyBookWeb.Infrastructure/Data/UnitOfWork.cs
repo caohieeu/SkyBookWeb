@@ -26,7 +26,14 @@ namespace SkyBookWeb.Infrastructure.Data
         }
         public async Task<bool> Complete()
         {
-            return await _dbContext.SaveChangesAsync() > 0;
+            try
+            {
+                return await _dbContext.SaveChangesAsync() > 0;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public void Dispose()

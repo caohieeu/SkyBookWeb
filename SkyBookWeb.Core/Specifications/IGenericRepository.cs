@@ -15,6 +15,6 @@ namespace SkyBookWeb.Core.Specifications
         Task<T> GetAsync(Expression<Func<T, bool>> expression);
         void Add(T entity);
         void Update(T entity);
-        bool Delete(T entity);
+        void Delete(T entity);
     }
 }

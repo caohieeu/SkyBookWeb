@@ -12,6 +12,6 @@ namespace SkyBookWeb.Core.Entities
         [Required(ErrorMessage = "Name is required")]
         [StringLength(100, ErrorMessage = "Maximum length of name is 100")]
         public string Name { get; set; } = string.Empty;
-        public int DisplayOrder { get; set; }
+        public int DisplayOrder { get; set; } = 0;
     }
 }

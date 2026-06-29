@@ -12,6 +12,7 @@
             <p class="mb-0 small" style="color: #1DB954;">Update a category for your products</p>
         </div>
         <div class="card-body p-4">
+            <div asp-validation-summary="All" class="text-danger"></div>
             <form method="post" asp-action="Update">
                 <input asp-for="Id" hidden />
                 <div class="mb-3">

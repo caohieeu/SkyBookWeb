@@ -22,7 +22,8 @@ namespace SkyBookWeb.Controllers
         }
         public IActionResult Create()
         {
-            return View();
+            Category category = new Category();
+            return View(category);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -78,16 +79,17 @@ namespace SkyBookWeb.Controllers
                 {
                     ModelState.AddModelError("", "This category does not exist");
                 }
-                else if(await _unitOfWork.Repository<Category>().ExistAsync(c => c.Name.ToLower() == category.Name.ToLower()))
-                {
-                    ModelState.AddModelError("", "This category name existed");
-                }
                 else
                 {
                     _unitOfWork.Repository<Category>().Update(category);
                     if (await _unitOfWork.Complete())
                     {
+                        TempData["Success"] = "Update category successfully";
                         return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "This name category existed or something error");
                     }
                 }
             }
@@ -131,7 +133,7 @@ namespace SkyBookWeb.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            return View("Index");
+            return View();
         }
     }
 }

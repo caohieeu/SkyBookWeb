@@ -13,6 +13,7 @@
         </div>
         <div class="card-body p-4">
             <form method="post" asp-action="Delete">
+                <input asp-for="Id" hidden />
                 <div class="mb-3">
                     <label class="form-label fw-semibold small">Category Name</label>
                     <input asp-for="Name" type="text" name="Name" disabled class="form-control" placeholder="Enter category name" />

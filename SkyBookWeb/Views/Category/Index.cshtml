@@ -1,14 +1,6 @@
 ﻿@model List<Category>
 
 <div class="container-fluid">
-
-    @if(TempData["Success"] != null)
-    {
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            @TempData["Success"]
-        </div>
-    }
-
     <div class="card border shadow-sm overflow-hidden">
         <div class="card-header text-white py-3 px-4 d-flex align-items-center justify-content-between" style="background: linear-gradient(to right, #065f46, #282828, #191414);">
             <div>
@@ -19,6 +11,12 @@
                 <i class="bi bi-plus-lg"></i> New Category
             </a>
         </div>
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show my-3" role="alert">
+                @TempData["Success"]
+            </div>
+        }
         <div class="table-responsive">
             <table class="table-styled">
                 <thead>

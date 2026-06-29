@@ -59,9 +59,9 @@ namespace SkyBookWeb.Infrastructure.Repositories
             _dbContext.Entry<T>(entity).State = EntityState.Modified;
         }
 
-        public bool Delete(T entity)
+        public void Delete(T entity)
         {
-            return true;
+            _dbContext.Remove(entity);
         }
     }
 }
