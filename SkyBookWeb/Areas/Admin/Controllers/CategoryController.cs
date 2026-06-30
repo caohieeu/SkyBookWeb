@@ -5,9 +5,9 @@ using SkyBookWeb.Core.Interfaces;
 using SkyBookWeb.Core.Specifications;
 using SkyBookWeb.Infrastructure.Data;
 
-namespace SkyBookWeb.Areas.Customer.Controllers
+namespace SkyBookWeb.Areas.Admin.Controllers
 {
-    [Area("Customer")]
+    [Area("Admin")]
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
