@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SkyBookWeb.Core.Entities
 {
@@ -17,19 +14,23 @@ namespace SkyBookWeb.Core.Entities
         public string ISBN { get; set; } = string.Empty;
         [Required(ErrorMessage = "Author is required")]
         public string Author { get; set; } = string.Empty;
-        [DisplayName("List Price")]
+        [Display(Name = "List Price")]
         [Required(ErrorMessage = "List price is required")]
         [Range(1, 1000, ErrorMessage = "List price must be between 1 and 1000")]
         public double ListPrice { get; set; }
-        [DisplayName("Price For 1-50")]
+        [Display(Name = "Price For 1-50")]
         [Range(1, 1000, ErrorMessage = "Price For 1-50 must be between 1 and 1000")]
         public double Price { get; set; }
-        [DisplayName("Price For 50+")]
+        [Display(Name = "Price For 50+")]
         [Range(1, 1000, ErrorMessage = "Price 50+ must be between 1 and 1000")]
         public double Price50 { get; set; }
         [DisplayName("Price For 100+")]
         [Range(1, 1000, ErrorMessage = "Price 100+ must be between 1 and 1000")]
         public double Price100 { get; set; }
+        public int CategoryId { get; set; }
+        [ForeignKey("CategoryId")]
+        public Category Category { get; set; }
+        [ValidateNever]
         [DisplayName("Product Image")]
         public string? ImageUrl { get; set; }
     }

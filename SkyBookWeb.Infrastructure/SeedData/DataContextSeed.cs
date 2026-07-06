@@ -29,6 +29,19 @@ namespace SkyBookWeb.Infrastructure.SeedData
                         await dataContext.SaveChangesAsync();
                     }
                 }
+                if (!dataContext.Products.Any())
+                {
+                    var dataFileProducts = File.ReadAllText("../SkyBookWeb.Infrastructure/SeedData/product.json");
+                    var products = JsonSerializer.Deserialize<List<Product>>(dataFileProducts);
+                    if (products != null && products.Any())
+                    {
+                        foreach (var product in products)
+                        {
+                            await dataContext.AddAsync(product);
+                        }
+                        await dataContext.SaveChangesAsync();
+                    }
+                }
             }
             catch(Exception ex)
             {
