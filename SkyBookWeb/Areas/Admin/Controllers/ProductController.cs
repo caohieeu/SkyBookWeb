@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SkyBookWeb.Core.Entities;
-using SkyBookWeb.Core.Specifications;
+using SkyBookWeb.Core.Interfaces;
 
 namespace SkyBookWeb.Areas.Admin.Controllers
 {

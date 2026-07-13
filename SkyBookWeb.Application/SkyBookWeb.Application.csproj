@@ -6,4 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="SkyBookWeb.Core">
+      <HintPath>..\SkyBookWeb.Infrastructure\bin\Debug\net8.0\SkyBookWeb.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

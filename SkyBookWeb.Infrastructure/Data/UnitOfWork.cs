@@ -1,14 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
 using SkyBookWeb.Core.Entities;
 using SkyBookWeb.Core.Interfaces;
-using SkyBookWeb.Core.Specifications;
 using SkyBookWeb.Infrastructure.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SkyBookWeb.Infrastructure.Data
 {

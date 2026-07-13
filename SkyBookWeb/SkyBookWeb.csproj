@@ -12,6 +12,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,6 +21,13 @@
 
   <ItemGroup>
     <Folder Include="assets\js\" />
+    <Folder Include="Dtos\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="SkyBookWeb.Application">
+      <HintPath>..\SkyBookWeb.Application\bin\Debug\net8.0\SkyBookWeb.Application.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

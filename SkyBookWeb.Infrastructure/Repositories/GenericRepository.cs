@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SkyBookWeb.Core.Entities;
-using SkyBookWeb.Core.Specifications;
+using SkyBookWeb.Core.Interfaces;
 using SkyBookWeb.Infrastructure.Data;
 
 namespace SkyBookWeb.Infrastructure.Repositories
@@ -34,18 +34,23 @@ namespace SkyBookWeb.Infrastructure.Repositories
             return await _dbContext.Set<T>().FirstOrDefaultAsync(expression);
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, object>>? expression = null)
         {
             try
             {
-                return await _dbContext.Set<T>().ToListAsync();
+                var query = _dbContext.Set<T>().AsQueryable<T>();
+                if(expression != null)
+                {
+                    query = query.Include(expression);
+                }
+                return await query.ToListAsync();
             }
             catch(Exception ex)
             {
                 var logger = _loggerFactory.CreateLogger<GenericRepository<T>>();
                 logger.LogError(ex, "Something went wrong with get data from db");
 
-                return null;
+                return Enumerable.Empty<T>();
             }
         }
 

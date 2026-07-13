@@ -6,12 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using SkyBookWeb.Core.Entities;
 
-namespace SkyBookWeb.Core.Specifications
+namespace SkyBookWeb.Core.Interfaces
 {
     public interface IGenericRepository<T> where T : BaseEntity
     {
         Task<bool> ExistAsync(Expression<Func<T, bool>> expression);
-        Task<IEnumerable<T>> GetAllAsync();
+        Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, object>>? expression = null);
         Task<T> GetAsync(Expression<Func<T, bool>> expression);
         void Add(T entity);
         void Update(T entity);

@@ -1,5 +1,4 @@
 ﻿using SkyBookWeb.Core.Interfaces;
-using SkyBookWeb.Core.Specifications;
 using SkyBookWeb.Infrastructure.Data;
 using SkyBookWeb.Infrastructure.Repositories;
 using System.ComponentModel;

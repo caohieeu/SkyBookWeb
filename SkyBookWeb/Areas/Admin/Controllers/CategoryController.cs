@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using SkyBookWeb.Application.ICustomServices;
 using SkyBookWeb.Core.Entities;
 using SkyBookWeb.Core.Interfaces;
-using SkyBookWeb.Core.Specifications;
 using SkyBookWeb.Infrastructure.Data;
 
 namespace SkyBookWeb.Areas.Admin.Controllers
@@ -11,15 +11,18 @@ namespace SkyBookWeb.Areas.Admin.Controllers
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public CategoryController(IGenericRepository<Category> categoryRepository,
-            IUnitOfWork unitOfWork)
+        private readonly ICategoryService _categoryService;
+        public CategoryController(
+            IGenericRepository<Category> categoryRepository,
+            IUnitOfWork unitOfWork,
+            ICategoryService categoryService)
         {
             _unitOfWork = unitOfWork;
+            _categoryService = categoryService;
         }
         public async Task<IActionResult> Index()
         {
-            var categories = await _unitOfWork.Repository<Category>().GetAllAsync();
-            return View(categories);
+            return View(await _categoryService.GetCategoriesAsync());
         }
         public IActionResult Create()
         {
