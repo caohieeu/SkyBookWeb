@@ -1,23 +1,17 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using SkyBookWeb.Application.Common;
 using SkyBookWeb.Application.ICustomServices;
 using SkyBookWeb.Core.Entities;
-using SkyBookWeb.Core.Interfaces;
-using SkyBookWeb.Infrastructure.Data;
 
 namespace SkyBookWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class CategoryController : Controller
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly ICategoryService _categoryService;
         public CategoryController(
-            IGenericRepository<Category> categoryRepository,
-            IUnitOfWork unitOfWork,
             ICategoryService categoryService)
         {
-            _unitOfWork = unitOfWork;
             _categoryService = categoryService;
         }
         public async Task<IActionResult> Index()
@@ -34,36 +28,33 @@ namespace SkyBookWeb.Areas.Admin.Controllers
         [ActionName("Create")]
         public async Task<IActionResult> CreatePost(Category category)
         {
-            if(ModelState.IsValid)
+            if(!ModelState.IsValid)
             {
-                if (await _unitOfWork
-                    .Repository<Category>()
-                    .ExistAsync(c => c.Name.ToLower() == category.Name.ToLower()))
-                {
-                    ModelState.AddModelError("", "This category name existed");
-                }
-                else
-                {
-                    _unitOfWork.Repository<Category>().Add(category);
-                    if (await _unitOfWork.Complete())
-                    {
-                        TempData["Success"] = "Category add successfully";
-                        return RedirectToAction("Index");
-                    }
-                }
+                return View();
             }
+
+            var result = await _categoryService.CreateAsync(category);
+
+            if (result is ServiceResult<Category>.Failure failure)
+            {
+                ModelState.AddModelError("", failure.Errors);
+            }
+            else if (result is ServiceResult<Category>.Success success)
+            {
+                TempData["Success"] = "Category add successfully";
+                return RedirectToAction("Index");
+            }
+            
             return View();
         }
-        public async Task<IActionResult> Update(int? id)
+        public IActionResult Update(int? id)
         {
             if(id == null || id == 0)
             {
                 return NotFound();
             }
 
-            var currentCategory = await _unitOfWork
-                .Repository<Category>()
-                .GetAsync(x => x.Id == id);
+            var currentCategory = _categoryService.GetCategoryById(id);
 
             if (currentCategory == null)
             {
@@ -77,38 +68,33 @@ namespace SkyBookWeb.Areas.Admin.Controllers
         [ActionName("Update")]
         public async Task<IActionResult> UpdatePost(Category category)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                if(!await _unitOfWork.Repository<Category>().ExistAsync(c => c.Id == category.Id))
-                {
-                    ModelState.AddModelError("", "This category does not exist");
-                }
-                else
-                {
-                    _unitOfWork.Repository<Category>().Update(category);
-                    if (await _unitOfWork.Complete())
-                    {
-                        TempData["Success"] = "Update category successfully";
-                        return RedirectToAction("Index");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "This name category existed or something error");
-                    }
-                }
+                return View(category);
             }
+
+            var result = await _categoryService.UpdateAsync(category);
+
+            if(result is ServiceResult<Category>.Failure failure)
+            {
+                ModelState.AddModelError("", failure.Errors);
+            }
+            else if(result is ServiceResult<Category>.Success success)
+            {
+                TempData["Success"] = "Update category successfully";
+                return RedirectToAction("Index");
+            }
+
             return View(category);
         }
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null || id == 0)
             {
                 return NotFound();
             }
 
-            var currentCategory = await _unitOfWork
-                .Repository<Category>()
-                .GetAsync(x => x.Id == id);
+            var currentCategory = _categoryService.GetCategoryById(id);
 
             if (currentCategory == null)
             {
@@ -122,22 +108,18 @@ namespace SkyBookWeb.Areas.Admin.Controllers
         [ActionName("Delete")]
         public async Task<IActionResult> DeletePost(int? id)
         {
-            var currentCategory = await _unitOfWork
-                    .Repository<Category>()
-                    .GetAsync(c => c.Id == id);
-            if (currentCategory == null)
+            var result = await _categoryService.DeleteAsync(id);
+
+            if(result is ServiceResult<Category>.Failure failure)
             {
-                ModelState.AddModelError("", "Deleting this category is invalid");
+                ModelState.AddModelError("", failure.Errors);
             }
-            else
+            else if(result is ServiceResult<Category>.Success success)
             {
-                _unitOfWork.Repository<Category>().Delete(currentCategory);
-                if (await _unitOfWork.Complete())
-                {
-                    TempData["Success"] = "Delete category successfully";
-                    return RedirectToAction("Index");
-                }
+                TempData["Success"] = "Delete category successfully";
+                return RedirectToAction("Index");
             }
+
             return View();
         }
     }

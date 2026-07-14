@@ -1,4 +1,6 @@
-﻿using SkyBookWeb.Core.Interfaces;
+﻿using SkyBookWeb.Application.ICustomServices;
+using SkyBookWeb.Application.Implements;
+using SkyBookWeb.Core.Interfaces;
 using SkyBookWeb.Infrastructure.Data;
 using SkyBookWeb.Infrastructure.Repositories;
 using System.ComponentModel;
@@ -11,6 +13,7 @@ namespace SkyBookWeb.Extensions
         {
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<ICategoryService, CategoryService>();
         }
     }
 }

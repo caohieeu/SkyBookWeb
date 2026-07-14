@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SkyBookWeb.Application.CustomServices
+namespace SkyBookWeb.Application.Implements
 {
     public class ProductService
     {
