@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SkyBookWeb.Core.Entities;
 using SkyBookWeb.Core.Interfaces;
+using SkyBookWeb.Core.Specifications;
 using SkyBookWeb.Infrastructure.Data;
 
 namespace SkyBookWeb.Infrastructure.Repositories
@@ -67,6 +68,33 @@ namespace SkyBookWeb.Infrastructure.Repositories
         public void Delete(T entity)
         {
             _dbContext.Remove(entity);
+        }
+
+        public async Task<T> GetIdAsync(int id)
+        {
+            try
+            {
+                return await _dbContext.Set<T>().FindAsync(id);
+            }
+            catch(Exception)
+            {
+                throw;
+            }
+        }
+
+        public Task<T> GetEntityWithSpec(ISpecifications<T> specifications)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<T>> ListAsync(ISpecifications<T> specifications)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<T> ApplySpecification(ISpecifications<T> specifications)
+        {
+            return SpecificationEvaluator<T>.GetQuery(_dbContext.Set<T>().AsQueryable(), specifications);
         }
     }
 }

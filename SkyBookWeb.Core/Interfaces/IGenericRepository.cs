@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using SkyBookWeb.Core.Entities;
+using SkyBookWeb.Core.Specifications;
 
 namespace SkyBookWeb.Core.Interfaces
 {
@@ -13,8 +14,12 @@ namespace SkyBookWeb.Core.Interfaces
         Task<bool> ExistAsync(Expression<Func<T, bool>> expression);
         Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, object>>? expression = null);
         Task<T> GetAsync(Expression<Func<T, bool>> expression);
+        Task<T> GetIdAsync(int id);
         void Add(T entity);
         void Update(T entity);
         void Delete(T entity);
+        Task<T> GetEntityWithSpec(ISpecifications<T> specifications);
+        Task<IEnumerable<T>> ListAsync(ISpecifications<T> specifications);
+        IEnumerable<T> ApplySpecification(ISpecifications<T> specifications);
     }
 }
