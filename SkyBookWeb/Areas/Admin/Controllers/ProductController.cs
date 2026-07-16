@@ -1,21 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SkyBookWeb.Core.Entities;
-using SkyBookWeb.Core.Interfaces;
+using SkyBookWeb.Application;
+using SkyBookWeb.Core.Specifications;
 
 namespace SkyBookWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class ProductController : Controller
     {
-        private readonly IGenericRepository<Product> _productRepository;
-        public ProductController(IGenericRepository<Product> productRepository)
+        private readonly IProductService _productService;
+        public ProductController(IProductService productService)
         {
-            _productRepository = productRepository;
+            _productService = productService;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery] ProductSpecPrams productSpecPrams)
         {
-            var products = await _productRepository.GetAllAsync();
-            return View(products);
+            var products = await _productService.GetAllWithSpecification(productSpecPrams);
+            return View(products.ToList());
         }
         public IActionResult Create()
         {

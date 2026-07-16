@@ -1,9 +1,9 @@
-﻿using SkyBookWeb.Application.ICustomServices;
+﻿using Microsoft.Extensions.DependencyInjection;
+using SkyBookWeb.Application;
 using SkyBookWeb.Application.Implements;
 using SkyBookWeb.Core.Interfaces;
 using SkyBookWeb.Infrastructure.Data;
 using SkyBookWeb.Infrastructure.Repositories;
-using System.ComponentModel;
 
 namespace SkyBookWeb.Extensions
 {
@@ -14,6 +14,13 @@ namespace SkyBookWeb.Extensions
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IProductService, ProductService>();
+
+            //Auto mapper
+            services.AddAutoMapper(cfg =>
+            {
+                cfg.AddMaps(typeof(MappingProfiles).Assembly);
+            });
         }
     }
 }

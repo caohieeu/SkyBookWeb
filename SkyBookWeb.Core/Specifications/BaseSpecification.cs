@@ -33,7 +33,7 @@ namespace SkyBookWeb.Core.Specifications
         }
         public void AddOrderByDescending(Expression<Func<T, object>> orderByDescendingExpression)
         {
-            OrderBy = orderByDescendingExpression;
+            OrderByDescending = orderByDescendingExpression;
         }
         public void ApplyPaging(int take, int skip)
         {

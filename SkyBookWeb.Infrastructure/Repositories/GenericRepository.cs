@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SkyBookWeb.Core.Entities;
@@ -82,19 +77,19 @@ namespace SkyBookWeb.Infrastructure.Repositories
             }
         }
 
-        public Task<T> GetEntityWithSpec(ISpecifications<T> specifications)
+        public async Task<T> GetEntityWithSpec(ISpecifications<T> specifications)
         {
-            throw new NotImplementedException();
+            return await ApplySpecification(specifications).FirstOrDefaultAsync();
         }
 
-        public Task<IEnumerable<T>> ListAsync(ISpecifications<T> specifications)
+        public async Task<IEnumerable<T>> ListAsync(ISpecifications<T> specifications)
         {
-            throw new NotImplementedException();
+            return await ApplySpecification(specifications).ToListAsync();
         }
 
-        public IEnumerable<T> ApplySpecification(ISpecifications<T> specifications)
+        public IQueryable<T> ApplySpecification(ISpecifications<T> specifications)
         {
-            return SpecificationEvaluator<T>.GetQuery(_dbContext.Set<T>().AsQueryable(), specifications);
+            return SpecificationEvaluator<T>.GetQuery(_dbContext.Set<T>(), specifications);
         }
     }
 }

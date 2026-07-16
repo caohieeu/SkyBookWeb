@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using SkyBookWeb.Application.Common;
 using SkyBookWeb.Core.Entities;
 
-namespace SkyBookWeb.Application.ICustomServices
+namespace SkyBookWeb.Application
 {
     public interface ICategoryService
     {

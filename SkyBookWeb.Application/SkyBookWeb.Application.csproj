@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="16.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="SkyBookWeb.Core">
       <HintPath>..\SkyBookWeb.Infrastructure\bin\Debug\net8.0\SkyBookWeb.Core.dll</HintPath>
     </Reference>

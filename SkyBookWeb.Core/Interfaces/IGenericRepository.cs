@@ -20,6 +20,6 @@ namespace SkyBookWeb.Core.Interfaces
         void Delete(T entity);
         Task<T> GetEntityWithSpec(ISpecifications<T> specifications);
         Task<IEnumerable<T>> ListAsync(ISpecifications<T> specifications);
-        IEnumerable<T> ApplySpecification(ISpecifications<T> specifications);
+        IQueryable<T> ApplySpecification(ISpecifications<T> specifications);
     }
 }

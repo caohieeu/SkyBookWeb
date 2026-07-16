@@ -1,22 +1,20 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>9fbcda38-c08a-4912-b7cb-3829d48d7890</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="16.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.28" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.28">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\SkyBookWeb.Infrastructure\SkyBookWeb.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,6 +25,12 @@
   <ItemGroup>
     <Reference Include="SkyBookWeb.Application">
       <HintPath>..\SkyBookWeb.Application\bin\Debug\net8.0\SkyBookWeb.Application.dll</HintPath>
+    </Reference>
+    <Reference Include="SkyBookWeb.Core">
+      <HintPath>..\SkyBookWeb.Core\bin\Debug\net8.0\SkyBookWeb.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="SkyBookWeb.Infrastructure">
+      <HintPath>..\SkyBookWeb.Infrastructure\bin\Debug\net8.0\SkyBookWeb.Infrastructure.dll</HintPath>
     </Reference>
   </ItemGroup>
 
