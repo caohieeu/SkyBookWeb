@@ -9,7 +9,7 @@ namespace SkyBookWeb.Core.Specifications
     public class ProductSpecPrams
     {
         private const int MaxPageSize = 50;
-        public int PageIndex { get; set; } = 1;
+        public int PageIndex { get; set; } = 0;
         public int pageSize { get; set; } = 10;
         public int PageSize
         {

@@ -16,11 +16,11 @@ namespace SkyBookWeb.Infrastructure.Data
             }
             if (spec.OrderBy != null)
             {
-                query.OrderBy(spec.OrderBy);
+                query = query.OrderBy(spec.OrderBy);
             }
             if (spec.OrderByDescending != null)
             {
-                query.OrderByDescending(spec.OrderByDescending);
+                query = query.OrderByDescending(spec.OrderByDescending);
             }
             if (spec.IsPagingEnabled)
             {
