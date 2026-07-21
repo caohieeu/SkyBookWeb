@@ -17,7 +17,7 @@ namespace SkyBookWeb.Core.Specifications
         {
             AddInclude(x => x.Category);
             AddOrderBy(x => x.Title);
-            ApplyPaging(productSpecPrams.pageSize, productSpecPrams.pageSize * productSpecPrams.PageIndex);
+            ApplyPaging(productSpecPrams.PageSize, productSpecPrams.PageSize * productSpecPrams.PageIndex);
             if(!string.IsNullOrEmpty(productSpecPrams.Sort))
             {
                 switch(productSpecPrams.Sort)

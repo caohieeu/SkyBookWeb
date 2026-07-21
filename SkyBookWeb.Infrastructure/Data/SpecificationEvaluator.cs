@@ -24,7 +24,7 @@ namespace SkyBookWeb.Infrastructure.Data
             }
             if (spec.IsPagingEnabled)
             {
-                query.Skip(spec.Skip).Take(spec.Take);
+                query = query.Skip(spec.Skip).Take(spec.Take);
             }
             query = spec.Includes.Aggregate(query, (current, include) => current.Include(include));
 
