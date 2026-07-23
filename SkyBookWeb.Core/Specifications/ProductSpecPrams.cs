@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
 
 namespace SkyBookWeb.Core.Specifications
 {
@@ -10,19 +11,19 @@ namespace SkyBookWeb.Core.Specifications
     {
         private const int MaxPageSize = 50;
         public int PageIndex { get; set; } = 0;
-        public int pageSize { get; set; } = 10;
+        private int pageSize { get; set; } = 10;
         public int PageSize
         {
             get => pageSize;
             set => pageSize = (value > MaxPageSize) ? MaxPageSize : value;
         }
         public int? CategoryId { get; set; }
-        public string Sort { get; set; }
-        public string search { get; set; }
-        public string Search
+        public string? Sort { get; set; } = string.Empty;
+        private string? search { get; set; }
+        public string? Search
         {
             get => search;
-            set => search = value.ToLower();
+            set => search = value?.ToLower() ?? string.Empty;
         }
     }
 }

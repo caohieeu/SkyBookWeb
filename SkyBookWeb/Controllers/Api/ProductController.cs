@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using SkyBookWeb.Core.Entities;
-using SkyBookWeb.Core.Interfaces;
-using System.Text.Json;
+using SkyBookWeb.Application;
+using SkyBookWeb.Core.Specifications;
 
 namespace SkyBookWeb.Controllers.Api
 {
@@ -11,20 +10,20 @@ namespace SkyBookWeb.Controllers.Api
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly IGenericRepository<Product> _productRepository;
-        public ProductController(IGenericRepository<Product> productRepository)
+        private readonly IProductService _productService;
+        public ProductController(IProductService productService)
         {
-            _productRepository = productRepository;
+            _productService = productService;
         }
 
         [HttpGet("GetAll")]
-        public async Task<string> GetAll()
+        public async Task<string> GetAll([FromQuery] ProductSpecPrams productSpecPrams)
         {
-            var products = await _productRepository.GetAllAsync(x => x.Category);
+            var products = await _productService.GetAllWithSpecification(productSpecPrams);
             var serializerSettings = new JsonSerializerSettings();
             serializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 
-            return JsonConvert.SerializeObject(products, serializerSettings);
+            return JsonConvert.SerializeObject(products.ToList(), serializerSettings);
         }
     }
 }
