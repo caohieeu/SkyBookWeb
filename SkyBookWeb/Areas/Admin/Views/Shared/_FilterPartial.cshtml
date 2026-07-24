@@ -1,0 +1,75 @@
+﻿<style>
+	.filter-container {
+		margin-left: 15px;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
+	.search {
+		display: flex;
+		flex-direction: row;
+	}
+	.search-box {
+		position: relative
+	}
+	.search-box .bi {
+		position: absolute;
+		top: 5px;
+		left: 10px;
+	}
+	.search-box #search-inp {
+		padding: 4px 8px 4px 38px;
+	}
+	.search .btn-search {
+		margin-left: 15px;
+		background-color: #065f46;
+		color: #fff;
+	}
+
+	.filter-container .select-container {
+		margin-left: 10px;
+		margin-right: 10px;
+	}
+
+	.filter-selection {
+		margin-left: 20px;
+	}
+	.filter-selection span {
+		margin-left: 10px;
+	}
+	.filter-selection .selectionBox {
+		display: flex;
+	}
+</style>
+
+<div class="filter-container">
+	<div class="search">
+		<div class="search-box">
+			<i class="bi bi-search"></i>
+			<input id="search-inp" type="text" placeholder="Search product" name="search" value="" />
+		</div>
+		<button id="submitSearch" class="btn btn-search">
+			Search
+		</button>
+	</div>
+	<div class="filter-selection">
+		<span>Order by: </span>
+		<div class="selectionBox">
+			<div class="select-container">
+				<select id="nameType" name="nameType">
+					<option value="" disabled selected>Choose a filter type</option>
+					<option value="productName">Product Name</option>
+					<option value="isbn">ISBN</option>
+					<option value="price">Price</option>
+					<option value="author">Author</option>
+				</select>
+			</div>
+			<div class="select-container">
+				<select id="orderBy" name="orderBy">
+					<option selected value="Desc">Descending</option>
+					<option value="Asc">Ascending</option>
+				</select>
+			</div>
+		</div>
+	</div>
+</div>

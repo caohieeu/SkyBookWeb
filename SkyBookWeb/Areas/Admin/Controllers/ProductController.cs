@@ -12,10 +12,9 @@ namespace SkyBookWeb.Areas.Admin.Controllers
         {
             _productService = productService;
         }
-        public async Task<IActionResult> Index([FromQuery] ProductSpecPrams productSpecPrams)
+        public IActionResult Index()
         {
-            var products = await _productService.GetAllWithSpecification(productSpecPrams);
-            return View(products.ToList());
+            return View();
         }
         public IActionResult Create()
         {

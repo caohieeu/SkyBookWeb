@@ -1,9 +1,10 @@
-﻿@using SkyBookWeb.Application.Dtos
-@model List<ProductDto>
-
-<style>
+﻿<style>
     .fw-medium {
         color: #1e293b;
+    }
+
+    .card-header {
+        margin-bottom: 50px;
     }
 </style>
 
@@ -19,35 +20,21 @@
             </a>
         </div>
         <div class="table-responsive">
+
+            <partial name="_FilterPartial" />
+
             <table id="tblData" class="table-styled">
                 <thead>
                     <tr>
-                        <th><a class="product-column" href="#">Product Name <i class="bi bi-arrow-up"></i></a></th>
+                        <th>Product Name</th>
                         <th>ISBN </th>
                         <th>Author</th>
-                        <th><a class="product-column" data-filter="sort=priceDesc" href="#">Price <i class="bi bi-arrow-up"></i></a></th>
+                        <th>Price</th>
                         <th>Category</th>
                         <th class="text-end">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="table-data-product">
-                    @* @if (Model != null && Model.Count > 0) *@
-                    @* { *@
-                    @*     foreach (var product in Model) *@
-                    @*     { *@
-                    @*         <tr> *@
-                    @*             <td class="fw-medium" style="color: #1e293b;">@product.Title</td> *@
-                    @*             <td class="fw-medium" style="color: #1e293b;">@product.ISBN</td> *@
-                    @*             <td class="fw-medium" style="color: #1e293b;">@product.Author</td> *@
-                    @*             <td class="fw-medium" style="color: #1e293b;">@product.Price</td> *@
-                    @*             <td><span class="badge bg-light text-dark border">@product.Category</span></td> *@
-                    @*             <td class="text-end"> *@
-                    @*                 <a asp-action="Update" asp-route-id="@product.Id" class="btn btn-sm btn-outline-success me-1"><i class="bi bi-pencil-square me-1"></i>Edit</a> *@
-                    @*                 <a asp-action="Delete" asp-route-id="@product.Id" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash me-1"></i>Delete</a> *@
-                    @*             </td> *@
-                    @*         </tr> *@
-                    @*     } *@
-                    @* } *@
                 </tbody>
             </table>
         </div>
@@ -66,7 +53,7 @@
             strItemHtml += `<td class="fw-medium">` + item.title + "</td>";
             strItemHtml += `<td class="fw-medium">` + item.isbn + "</td>";
             strItemHtml += `<td class="fw-medium">` + item.author + "</td>";
-            strItemHtml += `<td class="fw-medium" filter="priceDesc">` + item.price + "</td>";
+            strItemHtml += `<td class="fw-medium">` + item.price + "</td>";
             strItemHtml += `<td><span class="badge bg-light text-dark border">` + item.category + "</td>";
             strItemHtml += `<td class="text-end">`;
             strItemHtml += `<a href="/Product/Update/${item.id}" class="btn btn-sm btn-outline-success me-1">
@@ -120,7 +107,15 @@
 
     loadData();
 
-    $(".product-column").click(function(){
-
+    $('#submitSearch').click(function() {
+        console.log($('#search-inp').val())
+        var searchValue = {
+            search: $('#search-inp').val(),
+            sort: $('#nameType').val() + $('#orderBy').val(),
+            pageIndex: 0,
+            pageSize: 10
+        }
+        
+        loadData(searchValue)
     })
 </script>
