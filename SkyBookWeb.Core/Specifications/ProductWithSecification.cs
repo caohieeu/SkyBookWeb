@@ -12,13 +12,13 @@ namespace SkyBookWeb.Core.Specifications
     {
         public ProductWithSecification([FromQuery] ProductSpecPrams productSpecPrams) : base 
             (x => (string.IsNullOrEmpty(productSpecPrams.Search) || 
-            x.Title.Contains(productSpecPrams.Search.Trim(), StringComparison.OrdinalIgnoreCase)) &&
+            x.Title.Contains(productSpecPrams.Search.Trim())) &&
             (!productSpecPrams.CategoryId.HasValue || x.CategoryId == productSpecPrams.CategoryId)
             )
         {
             AddInclude(x => x.Category);
             AddOrderBy(x => x.Title);
-            ApplyPaging(productSpecPrams.PageSize, productSpecPrams.PageSize * productSpecPrams.PageIndex);
+            ApplyPaging(productSpecPrams.PageSize, productSpecPrams.PageSize * (productSpecPrams.PageIndex - 1));
             if(!string.IsNullOrEmpty(productSpecPrams.Sort))
             {
                 switch(productSpecPrams.Sort)

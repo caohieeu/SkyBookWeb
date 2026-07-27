@@ -1,44 +1,55 @@
-﻿<style>
+﻿@using SkyBookWeb.Application.Dtos
+
+@model FilterDto
+
+<style>
 	.filter-container {
-		margin-left: 15px;
-		display: flex;
-		flex-direction: row;
-		align-items: center;
+	margin-left: 15px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
 	}
+
 	.search {
-		display: flex;
-		flex-direction: row;
+	display: flex;
+	flex-direction: row;
 	}
+
 	.search-box {
-		position: relative
+	position: relative
 	}
+
 	.search-box .bi {
-		position: absolute;
-		top: 5px;
-		left: 10px;
+	position: absolute;
+	top: 5px;
+	left: 10px;
 	}
+
 	.search-box #search-inp {
-		padding: 4px 8px 4px 38px;
+	padding: 4px 8px 4px 38px;
 	}
+
 	.search .btn-search {
-		margin-left: 15px;
-		background-color: #065f46;
-		color: #fff;
+	margin-left: 15px;
+	background-color: #065f46;
+	color: #fff;
 	}
 
 	.filter-container .select-container {
-		margin-left: 10px;
-		margin-right: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
 	}
 
 	.filter-selection {
-		margin-left: 20px;
+	margin-left: 20px;
 	}
+
 	.filter-selection span {
-		margin-left: 10px;
+	margin-left: 10px;
 	}
+
 	.filter-selection .selectionBox {
-		display: flex;
+	display: flex;
 	}
 </style>
 
@@ -58,10 +69,13 @@
 			<div class="select-container">
 				<select id="nameType" name="nameType">
 					<option value="" disabled selected>Choose a filter type</option>
-					<option value="productName">Product Name</option>
-					<option value="isbn">ISBN</option>
-					<option value="price">Price</option>
-					<option value="author">Author</option>
+					@if (Model.OrderBySelections != null && Model.OrderBySelections.Any())
+					{
+						foreach (var item in Model.OrderBySelections)
+						{
+							<option value="@item.Value">@item.Title</option>
+						}
+					}
 				</select>
 			</div>
 			<div class="select-container">

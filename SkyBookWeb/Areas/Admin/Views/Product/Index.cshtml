@@ -1,4 +1,7 @@
-﻿<style>
+﻿@using SkyBookWeb.Helpers;
+@using SkyBookWeb.Application.Dtos;
+
+<style>
     .fw-medium {
         color: #1e293b;
     }
@@ -21,12 +24,12 @@
         </div>
         <div class="table-responsive">
 
-            <partial name="_FilterPartial" />
+            @await Component.InvokeAsync("Filter")
 
             <table id="tblData" class="table-styled">
                 <thead>
                     <tr>
-                        <th>Product Name</th>
+                        <th>Product Name(Title)</th>
                         <th>ISBN </th>
                         <th>Author</th>
                         <th>Price</th>
@@ -40,10 +43,6 @@
         </div>
     </div>
 </div>
-
-@* @section scripts{ *@
-@*     <script src="~/js/product.js" asp-append-version="true"></script> *@
-@* } *@
 
 <script>
     function assignDataToProductDiv(data) {
@@ -112,7 +111,7 @@
         var searchValue = {
             search: $('#search-inp').val(),
             sort: $('#nameType').val() + $('#orderBy').val(),
-            pageIndex: 0,
+            pageIndex: 1,
             pageSize: 10
         }
         

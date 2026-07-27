@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="assets\js\" />
     <Folder Include="Dtos\" />
   </ItemGroup>
