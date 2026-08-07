@@ -1,11 +1,9 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SkyBookWeb.Application;
-using SkyBookWeb.Application.Common;
-using SkyBookWeb.Application.Implements;
+using SkyBookWeb.Application.Interfaces;
 using SkyBookWeb.Core.Entities;
-using SkyBookWeb.Core.Specifications;
+using SkyBookWeb.Models.ViewModels;
 
 namespace SkyBookWeb.Areas.Admin.Controllers
 {
@@ -14,10 +12,17 @@ namespace SkyBookWeb.Areas.Admin.Controllers
     {
         private readonly IProductService _productService;
         private readonly ICategoryService _categoryService;
-        public ProductController(IProductService productService, ICategoryService categoryService)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IFileService _uploadService;
+        public ProductController(IProductService productService, 
+            ICategoryService categoryService,
+            IWebHostEnvironment webHostEnvironment,
+            IFileService uploadService)
         {
             _productService = productService;
             _categoryService = categoryService;
+            _webHostEnvironment = webHostEnvironment;
+            _uploadService = uploadService;
         }
         public IActionResult Index()
         {
@@ -31,32 +36,42 @@ namespace SkyBookWeb.Areas.Admin.Controllers
                     Text = x.Name,
                     Value = x.Id.ToString()
                 });
-            ViewData["CategoryList"] = categoryList;
-            return View();
+
+            var viewModel = new ProductVM
+            {
+                Product = new Product(),
+                CategoryList = categoryList
+            };
+            return View(viewModel);
         }
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //[ActionName("Upsert")]
-        //public async Task<IActionResult> UpsertPost(Category category)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View(category);
-        //    }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ActionName("Upsert")]
+        public async Task<IActionResult> UpsertPost(Product product, IFormFile fileImage)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(new ProductVM());
+            }
 
-        //    var result = await _productService.UpdateAsync(category);
+            var wwwRootPath = _webHostEnvironment.WebRootPath;
+            var fileName = Guid.NewGuid().ToString() + fileImage.FileName;
+            var filePath = Path.Combine("images", "product");
+            var finalPath = Path.Combine(wwwRootPath, filePath);
 
-        //    if (result is ServiceResult<Category>.Failure failure)
-        //    {
-        //        ModelState.AddModelError("", failure.Errors);
-        //    }
-        //    else if (result is ServiceResult<Category>.Success success)
-        //    {
-        //        TempData["Success"] = "Update category successfully";
-        //        return RedirectToAction("Index");
-        //    }
+            if(!Directory.Exists(finalPath))
+            {
+                Directory.CreateDirectory(finalPath);
+            }
 
-        //    return View(category);
-        //}
+            using(var fileStream = new FileStream(Path.Combine(finalPath, fileName), FileMode.Create))
+            {
+                fileImage.CopyTo(fileStream);
+            }
+
+            product.ImageUrl = Path.Combine(@"\", finalPath, fileName);
+
+            return View(new ProductVM());
+        }
     }
 }

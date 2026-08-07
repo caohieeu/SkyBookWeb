@@ -31,9 +31,11 @@ namespace SkyBookWeb.Core.Entities
         [Display(AutoGenerateField = false)]
         public double Price100 { get; set; }
         [Display(AutoGenerateField = false)]
+        [DisplayName("Category")]
         public int CategoryId { get; set; }
         [ForeignKey("CategoryId")]
         [Display(AutoGenerateField = false)]
+        [ValidateNever]
         public Category Category { get; set; }
         [ValidateNever]
         [DisplayName("Product Image")]
