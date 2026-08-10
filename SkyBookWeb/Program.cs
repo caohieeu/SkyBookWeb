@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using SkyBookWeb.Application.Implements;
+using SkyBookWeb.Application.Interfaces;
 using SkyBookWeb.Extensions;
 using SkyBookWeb.Infrastructure.Data;
 using SkyBookWeb.Infrastructure.SeedData;
@@ -16,11 +18,17 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 //Register services
 builder.Services.AddApplicationServices();
 
+
+//File Service
+builder.Services.AddScoped<IFileService>(provider =>
+{
+    return new FileService(builder.Environment.WebRootPath);
+});
+
 var app = builder.Build();
 
-
 // Db Migration
-using(var scope = app.Services.CreateScope())
+using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var logger = services.GetService<ILoggerFactory>();

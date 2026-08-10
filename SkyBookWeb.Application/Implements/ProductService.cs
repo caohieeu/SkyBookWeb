@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using SkyBookWeb.Application.Common;
 using SkyBookWeb.Application.Dtos;
 using SkyBookWeb.Core.Entities;
 using SkyBookWeb.Core.Interfaces;
@@ -15,11 +16,13 @@ namespace SkyBookWeb.Application.Implements
     {
         private readonly IGenericRepository<Product> _productRepository;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
         public ProductService(IGenericRepository<Product> productRepository,
-            IMapper mapper)
+            IMapper mapper, IUnitOfWork unitOfWork)
         {
             _productRepository = productRepository;
             _mapper = mapper;
+            _unitOfWork = unitOfWork;
         }
         public async Task<IEnumerable<ProductDto>> GetAllWithSpecification(ProductSpecPrams productSpecPrams)
         {
@@ -29,6 +32,28 @@ namespace SkyBookWeb.Application.Implements
             var result = products.Select(x => _mapper.Map<ProductDto>(x));
 
             return result;
+        }
+        public async Task<ServiceResult<Product>> CreateAsync(Product category)
+        {
+            var isExisted = await _unitOfWork
+                    .Repository<Product>()
+                    .ExistAsync(c => c.Title.ToLower() == category.Title.ToLower());
+
+            if (isExisted)
+            {
+                return ServiceResult<Product>.FromFailure("This product name existed");
+            }
+            else
+            {
+                _unitOfWork.Repository<Product>().Add(category);
+                if (await _unitOfWork.Complete())
+                {
+                    return ServiceResult<Product>.FromSuccess(category);
+                }
+
+                return ServiceResult<Product>.FromFailure(
+                    "An error occured while saving the product");
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SkyBookWeb.Application;
 using SkyBookWeb.Application.Implements;
+using SkyBookWeb.Application.Interfaces;
 using SkyBookWeb.Core.Interfaces;
 using SkyBookWeb.Infrastructure.Data;
 using SkyBookWeb.Infrastructure.Repositories;

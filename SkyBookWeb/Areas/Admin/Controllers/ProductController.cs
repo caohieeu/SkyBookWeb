@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SkyBookWeb.Application;
+using SkyBookWeb.Application.Common;
 using SkyBookWeb.Application.Interfaces;
 using SkyBookWeb.Core.Entities;
 using SkyBookWeb.Models.ViewModels;
@@ -12,17 +13,15 @@ namespace SkyBookWeb.Areas.Admin.Controllers
     {
         private readonly IProductService _productService;
         private readonly ICategoryService _categoryService;
-        private readonly IWebHostEnvironment _webHostEnvironment;
-        private readonly IFileService _uploadService;
+        private readonly IFileService _fileService;
         public ProductController(IProductService productService, 
             ICategoryService categoryService,
             IWebHostEnvironment webHostEnvironment,
-            IFileService uploadService)
+            IFileService fileService)
         {
             _productService = productService;
             _categoryService = categoryService;
-            _webHostEnvironment = webHostEnvironment;
-            _uploadService = uploadService;
+            _fileService = fileService;
         }
         public IActionResult Index()
         {
@@ -54,22 +53,22 @@ namespace SkyBookWeb.Areas.Admin.Controllers
                 return View(new ProductVM());
             }
 
-            var wwwRootPath = _webHostEnvironment.WebRootPath;
-            var fileName = Guid.NewGuid().ToString() + fileImage.FileName;
-            var filePath = Path.Combine("images", "product");
-            var finalPath = Path.Combine(wwwRootPath, filePath);
-
-            if(!Directory.Exists(finalPath))
+            if (fileImage != null)
             {
-                Directory.CreateDirectory(finalPath);
+                product.ImageUrl = await _fileService.UploadAsync(fileImage, Path.Combine("images", "products"));
             }
 
-            using(var fileStream = new FileStream(Path.Combine(finalPath, fileName), FileMode.Create))
-            {
-                fileImage.CopyTo(fileStream);
-            }
+            var result = await _productService.CreateAsync(product);
 
-            product.ImageUrl = Path.Combine(@"\", finalPath, fileName);
+            if (result is ServiceResult<Product>.Failure failure)
+            {
+                ModelState.AddModelError("", failure.Errors);
+            }
+            else if (result is ServiceResult<Product>.Success success)
+            {
+                TempData["Success"] = "Product added successfully";
+                return RedirectToAction("Index");
+            }
 
             return View(new ProductVM());
         }
