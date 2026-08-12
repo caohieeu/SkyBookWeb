@@ -33,11 +33,11 @@ namespace SkyBookWeb.Application.Implements
 
             return result;
         }
-        public async Task<ServiceResult<Product>> CreateAsync(Product category)
+        public async Task<ServiceResult<Product>> UpsertAsync(Product product)
         {
             var isExisted = await _unitOfWork
                     .Repository<Product>()
-                    .ExistAsync(c => c.Title.ToLower() == category.Title.ToLower());
+                    .ExistAsync(c => c.Title.ToLower() == product.Title.ToLower());
 
             if (isExisted)
             {
@@ -45,10 +45,17 @@ namespace SkyBookWeb.Application.Implements
             }
             else
             {
-                _unitOfWork.Repository<Product>().Add(category);
+                if(product.Id == 0)
+                {
+                    _unitOfWork.Repository<Product>().Add(product);
+                }
+                else
+                {
+                    _unitOfWork.Repository<Product>().Update(product);
+                }
                 if (await _unitOfWork.Complete())
                 {
-                    return ServiceResult<Product>.FromSuccess(category);
+                    return ServiceResult<Product>.FromSuccess(product);
                 }
 
                 return ServiceResult<Product>.FromFailure(

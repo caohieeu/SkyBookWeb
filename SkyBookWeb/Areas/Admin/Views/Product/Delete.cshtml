@@ -15,61 +15,72 @@
             <div asp-validation-summary="All" class="text-danger"></div>
             <form method="post" asp-action="Delete">
                 <input asp-for="@Model.Id" hidden />
-                <div class="col-lg-8">
-                    <div class="row g-3">
-                        <div class="col-12">
-                            <label class="form-label fw-semibold small">Product Name</label>
-                            <input asp-for="@Model.Title" type="text" disabled class="form-control" />
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label fw-semibold small">Product Name</label>
-                            <input asp-for="@Model.Description" type="text" disabled class="form-control" />
-                        </div>
-                        <div class="col-6">
-                            <label class="form-label fw-semibold small">ISBN</label>
-                            <input asp-for="@Model.ISBN" type="text" disabled class="form-control" placeholder="Enter ISBN" />
-                        </div>
-                        <div class="col-6">
-                            <label class="form-label fw-semibold small">Author</label>
-                            <input asp-for="@Model.Author" type="text" disabled class="form-control" placeholder="Enter author" />
-                        </div>
-                        <div class="border rounded p-3 mt-3 bg-light">
-                            <p class="text-uppercase fw-bold text-secondary mb-3" style="font-size: 0.65rem; letter-spacing: 0.1em">Pricing</p>
-                            <div class="row g-3">
-                                <div class="col-6 col-md-3">
-                                    <label class="form-label fw-semibold small">List Price</label>
-                                    <input asp-for="@Model.ListPrice" type="text" disabled class="form-control" />
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <label class="form-label fw-semibold small">Price for 1-50</label>
-                                    <input asp-for="@Model.Price" type="text" disabled class="form-control" />
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <label class="form-label fw-semibold small">Price for 50+</label>
-                                    <input asp-for="@Model.Price50" type="text" disabled class="form-control" />
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <label class="form-label fw-semibold small">Price for 100+</label>
-                                    <input asp-for="@Model.Price100" type="text" disabled class="form-control" />
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label fw-semibold small">Product Name</label>
+                                <input asp-for="@Model.Title" type="text" disabled class="form-control" />
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold small">Product Name</label>
+                                <input asp-for="@Model.Description" type="text" disabled class="form-control" />
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-semibold small">ISBN</label>
+                                <input asp-for="@Model.ISBN" type="text" disabled class="form-control" placeholder="Enter ISBN" />
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-semibold small">Author</label>
+                                <input asp-for="@Model.Author" type="text" disabled class="form-control" placeholder="Enter author" />
+                            </div>
+                            <div class="border rounded p-3 mt-3 bg-light">
+                                <p class="text-uppercase fw-bold text-secondary mb-3" style="font-size: 0.65rem; letter-spacing: 0.1em">Pricing</p>
+                                <div class="row g-3">
+                                    <div class="col-6 col-md-3">
+                                        <label class="form-label fw-semibold small">List Price</label>
+                                        <input asp-for="@Model.ListPrice" type="text" disabled class="form-control" />
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <label class="form-label fw-semibold small">Price for 1-50</label>
+                                        <input asp-for="@Model.Price" type="text" disabled class="form-control" />
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <label class="form-label fw-semibold small">Price for 50+</label>
+                                        <input asp-for="@Model.Price50" type="text" disabled class="form-control" />
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <label class="form-label fw-semibold small">Price for 100+</label>
+                                        <input asp-for="@Model.Price100" type="text" disabled class="form-control" />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="mt-3">
-                            <label asp-for="@Model.CategoryId" class="form-label fw-semibold small"></label>
-                            <select asp-for="@Model.CategoryId" class="form-select" disabled>
-                                <option>@Model.Category.Name</option>
-                            </select>
-                        </div>
-                        <div class="mt-3">
-                            <label asp-for="@Model.ImageUrl" class="form-label fw-semibold small"></label>
-                            <div class="border-2 rounded p-4 text-center" style="border: dashed">
-                                <img src="@Model.ImageUrl" alt="product image" />
+                            <div class="mt-3">
+                                <label asp-for="@Model.CategoryId" class="form-label fw-semibold small"></label>
+                                <select asp-for="@Model.CategoryId" class="form-select" disabled>
+                                    <option>@Model.Category.Name</option>
+                                </select>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-4">
-                    <!--image-->
+                    <div class="col-lg-4">
+                        <!--image-->
+                        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                        {
+                            <div class="border rounded p-3 bg-light text-center">
+                                <p class="text-uppercase text-secondary fw-semibold mb-2">Current image</p>
+                                <img src="@Model.ImageUrl" class="img-fluid rounded shadow-sm mb-2" />
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="border rounded p-3 bg-light text-center">
+                                <p class="text-uppercase text-secondary fw-semibold mb-2">Current image</p>
+                                <i class="bi bi-image" style="font-size: 3rem; color: #94a3b8"></i>
+                                <p class="text-secondary mb-0" style="font-size: 0.75rem;">No Image</p>
+                            </div>
+                        }
+                    </div>
                 </div>
                 <div class="d-flex gap-2 mt-4">
                     <button type="submit" class="btn btn-danger fw-semibold">Delete</button>

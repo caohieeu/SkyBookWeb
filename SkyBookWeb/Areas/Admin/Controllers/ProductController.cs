@@ -27,7 +27,7 @@ namespace SkyBookWeb.Areas.Admin.Controllers
         {
             return View();
         }
-        public async Task<IActionResult> Upsert()
+        public async Task<IActionResult> Upsert(int? id)
         {
             IEnumerable<SelectListItem> categoryList = (await _categoryService.GetCategoriesAsync())
                 .Select(x => new SelectListItem
@@ -41,27 +41,54 @@ namespace SkyBookWeb.Areas.Admin.Controllers
                 Product = new Product(),
                 CategoryList = categoryList
             };
+
+            if(id == null || id == 0)
+            {
+                return View(viewModel);
+            }
+
+            var currentProduct = await _productService.GetProductById(id);
+
+            if(currentProduct == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                viewModel.Product = currentProduct;
+            }
+
             return View(viewModel);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ActionName("Upsert")]
-        public async Task<IActionResult> UpsertPost(Product product, IFormFile fileImage)
+        public async Task<IActionResult> UpsertPost(ProductVM productVM, IFormFile? fileImage)
         {
+            IEnumerable<SelectListItem> categoryList = (await _categoryService.GetCategoriesAsync())
+            .Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.Id.ToString()
+            });
             if (!ModelState.IsValid)
             {
-                return View(new ProductVM());
+                productVM.CategoryList = categoryList;
+
+                return View(productVM);
             }
 
             if (fileImage != null)
             {
-                product.ImageUrl = await _fileService.UploadAsync(fileImage, Path.Combine("images", "products"));
+                productVM.Product.ImageUrl = await _fileService.UploadAsync(fileImage, Path.Combine("images", "products"));
             }
 
-            var result = await _productService.CreateAsync(product);
+            var result = await _productService.UpsertAsync(productVM.Product);
 
             if (result is ServiceResult<Product>.Failure failure)
             {
+                productVM.CategoryList = categoryList;
+
                 ModelState.AddModelError("", failure.Errors);
             }
             else if (result is ServiceResult<Product>.Success success)
@@ -70,7 +97,7 @@ namespace SkyBookWeb.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View(new ProductVM());
+            return View(productVM);
         }
         public async Task<IActionResult> Delete(int? id)
         {
