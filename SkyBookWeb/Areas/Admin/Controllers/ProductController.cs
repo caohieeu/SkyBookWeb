@@ -72,5 +72,37 @@ namespace SkyBookWeb.Areas.Admin.Controllers
 
             return View(new ProductVM());
         }
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if(id == null || id == 0)
+            {
+                return NotFound();
+            }
+            var currentProduct = await _productService.GetProductById(id);
+
+            if (currentProduct == null)
+                return NotFound();
+
+            return View(currentProduct);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ActionName("Delete")]
+        public async Task<IActionResult> DeletePost(int? id)
+        {
+            var result = await _productService.DeleteAsync(id);
+
+            if (result is ServiceResult<Product>.Failure failure)
+            {
+                ModelState.AddModelError("", failure.Errors);
+            }
+            else if (result is ServiceResult<Product>.Success success)
+            {
+                TempData["Success"] = "Delete product successfully";
+                return RedirectToAction("Index");
+            }
+
+            return View();
+        }
     }
 }

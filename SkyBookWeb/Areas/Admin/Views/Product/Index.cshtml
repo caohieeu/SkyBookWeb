@@ -9,6 +9,10 @@
     .card-header {
         margin-bottom: 50px;
     }
+
+    .card-img {
+        width: 98px;
+    }
 </style>
 
 <div class="container-fluid">
@@ -55,13 +59,13 @@
             strItemHtml += `<td class="fw-medium">` + item.author + "</td>";
             strItemHtml += `<td class="fw-medium">` + item.price + "</td>";
             strItemHtml += `<td><span class="badge bg-light text-dark border">` + item.category + "</td>";
-            strItemHtml += `<td class="fw-medium"> <img src=${item.imageUrl} />` + + "</td>";
+            strItemHtml += `<td class="fw-medium"> <img class="card-img" src=${item.imageUrl} />` + "</td>";
             strItemHtml += `<td class="text-end">`;
-            strItemHtml += `<a href="/Product/Update/${item.id}" class="btn btn-sm btn-outline-success me-1">
+            strItemHtml += `<a href="Product/Update/${item.id}" class="btn btn-sm btn-outline-success me-1">
                                 <i class="bi bi-pencil-square me-1"></i>Edit
                             </a>`;
-            strItemHtml += `<a href="/Product/Delete/${item.id}" class="btn btn-sm btn-outline-danger me-1">
-                                <i class="bi bi-trash me-1"></i>Edit
+            strItemHtml += `<a href="Product/Delete/${item.id}" class="btn btn-sm btn-outline-danger me-1">
+                                <i class="bi bi-trash me-1"></i>Delete
                             </a>`;
             strItemHtml += "</td>";
             strItemHtml += "</tr>";

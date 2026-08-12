@@ -10,6 +10,6 @@ namespace SkyBookWeb.Application.Interfaces
     public interface IFileService
     {
         Task<string> UploadAsync(IFormFile file, string folder);
-        string GetImagePath(string filePath);
+        string GetImagePath(string? filePath);
     }
 }

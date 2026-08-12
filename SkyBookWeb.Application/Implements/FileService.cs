@@ -16,7 +16,7 @@ namespace SkyBookWeb.Application.Implements
             _webRootPath = webRootPath;
         }
 
-        public string GetImagePath(string filePath)
+        public string GetImagePath(string? filePath)
         {
             if(!string.IsNullOrEmpty(filePath))
             {

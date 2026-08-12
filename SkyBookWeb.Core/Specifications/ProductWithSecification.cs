@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SkyBookWeb.Core.Entities;
 
 namespace SkyBookWeb.Core.Specifications
@@ -13,7 +8,8 @@ namespace SkyBookWeb.Core.Specifications
         public ProductWithSecification([FromQuery] ProductSpecPrams productSpecPrams) : base 
             (x => (string.IsNullOrEmpty(productSpecPrams.Search) || 
             x.Title.Contains(productSpecPrams.Search.Trim())) &&
-            (!productSpecPrams.CategoryId.HasValue || x.CategoryId == productSpecPrams.CategoryId)
+            (!productSpecPrams.CategoryId.HasValue || x.CategoryId == productSpecPrams.CategoryId) &&
+            !productSpecPrams.Id.HasValue || x.Id == productSpecPrams.Id
             )
         {
             AddInclude(x => x.Category);

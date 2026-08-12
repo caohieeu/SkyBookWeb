@@ -55,5 +55,40 @@ namespace SkyBookWeb.Application.Implements
                     "An error occured while saving the product");
             }
         }
+        public async Task<ServiceResult<Product>> DeleteAsync(int? id)
+        {
+            if (id == null)
+                return ServiceResult<Product>.FromFailure("Id can not be null");
+
+            var currentProduct = await _unitOfWork
+                    .Repository<Product>()
+                    .GetAsync(c => c.Id == id);
+
+            if (currentProduct == null)
+            {
+                return ServiceResult<Product>.FromFailure("Deleting this product is invalid");
+            }
+
+            _unitOfWork.Repository<Product>().Delete(currentProduct);
+            if (await _unitOfWork.Complete())
+            {
+                return ServiceResult<Product>.FromSuccess(currentProduct);
+            }
+            else
+            {
+                return ServiceResult<Product>.FromFailure("Something went wrong");
+            }
+        }
+
+        public async Task<Product> GetProductById(int? id)
+        {
+            if (id == null)
+                return null;
+
+            var spec = new ProductWithSecification(new ProductSpecPrams() { Id = id});
+            return await _unitOfWork
+                .Repository<Product>()
+                .GetEntityWithSpec(spec);
+        }
     }
 }

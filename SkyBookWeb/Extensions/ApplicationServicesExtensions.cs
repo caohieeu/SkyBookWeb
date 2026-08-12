@@ -17,6 +17,8 @@ namespace SkyBookWeb.Extensions
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
 
+            services.AddTransient<MappingProfiles.ProductMapping>();
+
             //Auto mapper
             services.AddAutoMapper(cfg =>
             {

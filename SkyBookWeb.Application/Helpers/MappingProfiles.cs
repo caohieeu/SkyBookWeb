@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using SkyBookWeb.Application.Dtos;
+using SkyBookWeb.Application.Interfaces;
 using SkyBookWeb.Core.Entities;
 
 namespace SkyBookWeb.Application
@@ -9,7 +10,21 @@ namespace SkyBookWeb.Application
         public MappingProfiles()
         {
             CreateMap<Product, ProductDto>()
-                .ForMember(d => d.Category, opt => opt.MapFrom(p => p.Category.Name));
+                .AfterMap<ProductMapping>();
+        }
+
+        public class ProductMapping : IMappingAction<Product, ProductDto>
+        {
+            private readonly IFileService _fileService;
+            public ProductMapping(IFileService fileService)
+            {
+                _fileService = fileService;
+            }
+            public void Process(Product source, ProductDto destination, ResolutionContext context)
+            {
+                destination.Category = source.Category.Name;
+                destination.ImageUrl = _fileService.GetImagePath(source?.ImageUrl);
+            }
         }
     }
 }

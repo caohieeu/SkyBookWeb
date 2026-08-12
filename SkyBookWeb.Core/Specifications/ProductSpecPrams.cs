@@ -18,6 +18,7 @@ namespace SkyBookWeb.Core.Specifications
             set => pageSize = (value > MaxPageSize) ? MaxPageSize : value;
         }
         public int? CategoryId { get; set; }
+        public int? Id { get; set; }
         public string? Sort { get; set; } = string.Empty;
         private string? search { get; set; }
         public string? Search

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using SkyBookWeb.Application;
 using SkyBookWeb.Application.Implements;
 using SkyBookWeb.Application.Interfaces;
 using SkyBookWeb.Extensions;
@@ -15,15 +16,14 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SQLConnection"));
 });
 
-//Register services
-builder.Services.AddApplicationServices();
-
-
 //File Service
 builder.Services.AddScoped<IFileService>(provider =>
 {
     return new FileService(builder.Environment.WebRootPath);
 });
+
+//Register services
+builder.Services.AddApplicationServices();
 
 var app = builder.Build();
 
