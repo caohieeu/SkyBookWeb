@@ -39,28 +39,25 @@ namespace SkyBookWeb.Application.Implements
                     .Repository<Product>()
                     .ExistAsync(c => c.Title.ToLower() == product.Title.ToLower());
 
-            if (isExisted)
+            if (product.Id == 0)
             {
-                return ServiceResult<Product>.FromFailure("This product name existed");
+                if (isExisted)
+                {
+                    return ServiceResult<Product>.FromFailure("This product name existed");
+                }
+                _unitOfWork.Repository<Product>().Add(product);
             }
             else
             {
-                if(product.Id == 0)
-                {
-                    _unitOfWork.Repository<Product>().Add(product);
-                }
-                else
-                {
-                    _unitOfWork.Repository<Product>().Update(product);
-                }
-                if (await _unitOfWork.Complete())
-                {
-                    return ServiceResult<Product>.FromSuccess(product);
-                }
-
-                return ServiceResult<Product>.FromFailure(
-                    "An error occured while saving the product");
+                _unitOfWork.Repository<Product>().Update(product);
             }
+            if (await _unitOfWork.Complete())
+            {
+                return ServiceResult<Product>.FromSuccess(product);
+            }
+
+            return ServiceResult<Product>.FromFailure(
+                "An error occured while saving the product");
         }
         public async Task<ServiceResult<Product>> DeleteAsync(int? id)
         {

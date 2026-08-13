@@ -15,6 +15,7 @@
             <div asp-validation-summary="All" class="text-danger"></div>
             <form method="post" asp-action="Upsert" enctype="multipart/form-data">
                 <input asp-for="Product.Id" hidden />
+                <input asp-for="Product.ImageUrl" hidden />
                 <div class="row">
                     <div class="col-lg-8">
                         <div class="row g-3">
@@ -24,8 +25,9 @@
                                 <span asp-validation-for="Product.Title" class="text-danger small"></span>
                             </div>
                             <div class="col-12">
-                                <label class="form-label fw-semibold small">Product Name</label>
-                                <input asp-for="Product.Description" type="text" class="form-control" />
+                                <label class="form-label fw-semibold small">Description</label>
+                                <textarea asp-for="Product.Description" class="form-control"></textarea>
+                                <div id="quill-editor" style="height: 200px;"></div>
                                 <span asp-validation-for="Product.Description" class="text-danger small"></span>
                             </div>
                             <div class="col-6">
@@ -108,3 +110,20 @@
         </div>
     </div>
 </div>
+
+@section scripts {
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+
+    <script>
+        const quill = new Quill('#quill-editor', {
+          theme: 'snow'
+        });
+
+        var textAreaDesc = document.querySelector('textarea[name="Product.Description"]');
+
+        if(textAreaDesc.value) quill.root.innerHTML = textAreaDesc.value;
+
+        quill.on('text-change', () => textArea.roo)
+    </script>
+}
