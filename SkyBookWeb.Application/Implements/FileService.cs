@@ -30,13 +30,10 @@ namespace SkyBookWeb.Application.Implements
         {
             if(!string.IsNullOrEmpty(imageUrl))
             {
-                var imageName = imageUrl
-                    .Split(new[] { '\\' }, StringSplitOptions.RemoveEmptyEntries)
-                    .LastOrDefault();
-                var path = Path.Combine(_webRootPath, imageUrl);
-                
                 try
                 {
+                    var path = Path.Combine(_webRootPath, imageUrl.TrimStart('\\', '/'));
+
                     if (System.IO.File.Exists(path))
                     {
                         System.IO.File.Delete(path);
