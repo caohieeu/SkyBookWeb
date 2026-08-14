@@ -26,7 +26,7 @@
                             </div>
                             <div class="col-12">
                                 <label class="form-label fw-semibold small">Description</label>
-                                <textarea asp-for="Product.Description" class="form-control"></textarea>
+                                <textarea asp-for="Product.Description" class="form-control" hidden></textarea>
                                 <div id="quill-editor" style="height: 200px;"></div>
                                 <span asp-validation-for="Product.Description" class="text-danger small"></span>
                             </div>
@@ -124,6 +124,6 @@
 
         if(textAreaDesc.value) quill.root.innerHTML = textAreaDesc.value;
 
-        quill.on('text-change', () => textArea.roo)
+        quill.on('text-change', () => textAreaDesc.value = quill.root.innerHTML) 
     </script>
 }
