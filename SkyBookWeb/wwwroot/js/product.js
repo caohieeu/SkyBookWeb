@@ -38,7 +38,6 @@ function assignDataToProductDiv(data) {
         strItemHtml += `<td class="fw-medium">` + item.author + "</td>";
         strItemHtml += `<td class="fw-medium">` + item.price + "</td>";
         strItemHtml += `<td><span class="badge bg-light text-dark border">` + item.category + "</td>";
-        strItemHtml += `<td class="fw-medium"> <img class="card-img" src=${item.imageUrl} />` + "</td>";
         strItemHtml += `<td class="text-end">`;
         strItemHtml += `<a href="Product/Upsert/${item.id}" class="btn btn-sm btn-outline-success me-1">
                                 <i class="bi bi-pencil-square me-1"></i>Edit

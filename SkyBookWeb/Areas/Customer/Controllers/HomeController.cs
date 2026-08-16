@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using SkyBookWeb.Application;
+using SkyBookWeb.Core.Specifications;
 
 namespace SkyBookWeb.Areas.Customer.Controllers
 {
@@ -6,15 +8,21 @@ namespace SkyBookWeb.Areas.Customer.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IProductService _productService;
+        public HomeController(ILogger<HomeController> logger, IProductService productService)
         {
             _logger = logger;
+            _productService = productService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var specParam = new ProductSpecPrams()
+            {
+                PageSize = 5
+            };
+            var products = await _productService.GetAllWithSpecification(specParam);
+            return View(products);
         }
 
         public IActionResult Privacy()

@@ -21,7 +21,7 @@ namespace SkyBookWeb.Application.Implements
         {
             if(!string.IsNullOrEmpty(filePath))
             {
-                return Path.Combine(_webRootPath, filePath);
+                return Path.Combine(_webRootPath, filePath.Replace("/", @"\\"));
             }
             return string.Empty;
         }

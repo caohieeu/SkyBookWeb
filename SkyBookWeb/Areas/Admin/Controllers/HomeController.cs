@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using SkyBookWeb.Application;
+using SkyBookWeb.Core.Specifications;
 
 namespace SkyBookWeb.Areas.Admin.Controllers
 {
@@ -6,7 +8,6 @@ namespace SkyBookWeb.Areas.Admin.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
