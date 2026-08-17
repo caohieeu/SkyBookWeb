@@ -8,7 +8,7 @@ namespace SkyBookWeb.Application
     public interface IProductService
     {
         Task<IEnumerable<ProductDto>> GetAllWithSpecification(ProductSpecPrams productSpecPrams);
-        Task<Product> GetProductById(int? id);
+        Task<Product> GetProductByIdAsync(int? id, bool includeCategory = false);
         Task<ServiceResult<Product>> UpsertAsync(Product category);
         Task<ServiceResult<Product>> DeleteAsync(int? id);
     }

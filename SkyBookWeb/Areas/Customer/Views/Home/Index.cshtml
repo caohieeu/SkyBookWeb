@@ -14,25 +14,20 @@
 <div class="container py-5" id="catalog">
     <div class="mb-4">
         <h2 class="fw-bold mb-1">Our Collection</h2>
-        <!-- TODO: Display dynamic book count here -->
         <p class="text-secondary mb-0">Explore all 25 books in our catalog</p>
     </div>
 
     <!-- Books Grid -->
-    <!-- TODO: Loop through products collection here -->
     @if(Model != null && Model.Any())
     {
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
 
             @foreach(var item in Model)
             {
-            <!-- Sample Book Card - This is a template, duplicate this inside the loop -->
             <div class="col">
                 <div class="card h-100 border shadow-sm book-card">
-                    <!-- TODO: Add dynamic link to Details page with asp-action and asp-route-productId -->
-                    <a href="#" class="text-decoration-none">
+                    <a asp-controller="Product" asp-action="Detail" asp-route-productId="@item.Id" class="text-decoration-none">
                         <div style="aspect-ratio: 3/4; overflow: hidden;">
-                            <!-- TODO: Display product image if available, otherwise show placeholder -->
                             <div class="w-100 h-100 d-flex align-items-center justify-content-center bg-light">
                                 <img src="@item.ImageUrl" style="width: 100%" />
                             </div>

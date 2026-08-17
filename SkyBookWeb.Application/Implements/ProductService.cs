@@ -26,6 +26,7 @@ namespace SkyBookWeb.Application.Implements
         }
         public async Task<IEnumerable<ProductDto>> GetAllWithSpecification(ProductSpecPrams productSpecPrams)
         {
+            productSpecPrams.IncludeCategory = true;
             var spec = new ProductWithSecification(productSpecPrams);
 
             var products = await _productRepository.ListAsync(spec);
@@ -84,12 +85,12 @@ namespace SkyBookWeb.Application.Implements
             }
         }
 
-        public async Task<Product> GetProductById(int? id)
+        public async Task<Product> GetProductByIdAsync(int? id, bool includeCategory = false)
         {
             if (id == null)
                 return null;
 
-            var spec = new ProductWithSecification(new ProductSpecPrams() { Id = id});
+            var spec = new ProductWithSecification(new ProductSpecPrams() { Id = id, IncludeCategory = true });
             return await _unitOfWork
                 .Repository<Product>()
                 .GetEntityWithSpec(spec);

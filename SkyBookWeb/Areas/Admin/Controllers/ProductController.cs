@@ -47,7 +47,7 @@ namespace SkyBookWeb.Areas.Admin.Controllers
                 return View(viewModel);
             }
 
-            var currentProduct = await _productService.GetProductById(id);
+            var currentProduct = await _productService.GetProductByIdAsync(id);
 
             if(currentProduct == null)
             {
@@ -105,7 +105,7 @@ namespace SkyBookWeb.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            var currentProduct = await _productService.GetProductById(id);
+            var currentProduct = await _productService.GetProductByIdAsync(id);
 
             if (currentProduct == null)
                 return NotFound();

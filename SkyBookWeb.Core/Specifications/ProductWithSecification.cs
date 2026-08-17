@@ -9,10 +9,15 @@ namespace SkyBookWeb.Core.Specifications
             (x => (string.IsNullOrEmpty(productSpecPrams.Search) || 
             x.Title.Contains(productSpecPrams.Search.Trim())) &&
             (!productSpecPrams.CategoryId.HasValue || x.CategoryId == productSpecPrams.CategoryId) &&
-            !productSpecPrams.Id.HasValue || x.Id == productSpecPrams.Id
+            (!productSpecPrams.Id.HasValue || x.Id == productSpecPrams.Id)
             )
         {
-            AddInclude(x => x.Category);
+            
+            if(productSpecPrams.IncludeCategory)
+            {
+                AddInclude(x => x.Category);
+            }
+
             AddOrderBy(x => x.Title);
             ApplyPaging(productSpecPrams.PageSize, productSpecPrams.PageSize * (productSpecPrams.PageIndex - 1));
             if(!string.IsNullOrEmpty(productSpecPrams.Sort))

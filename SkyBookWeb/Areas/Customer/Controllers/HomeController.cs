@@ -19,7 +19,7 @@ namespace SkyBookWeb.Areas.Customer.Controllers
         {
             var specParam = new ProductSpecPrams()
             {
-                PageSize = 5
+                PageSize = 8
             };
             var products = await _productService.GetAllWithSpecification(specParam);
             return View(products);
