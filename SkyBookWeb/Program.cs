@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SkyBookWeb.Application.Implements;
 using SkyBookWeb.Application.Interfaces;
+using SkyBookWeb.Core.Entities;
 using SkyBookWeb.Extensions;
 using SkyBookWeb.Infrastructure.Data;
 using SkyBookWeb.Infrastructure.SeedData;
@@ -15,7 +16,9 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("SQLConnection"));
 });
-builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDBContext>();
+
+//builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDBContext>();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDBContext>();
 
 //File Service
 builder.Services.AddScoped<IFileService>(provider =>
