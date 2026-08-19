@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Admin\Views\Shared\" />
+    <Folder Include="Areas\Customer\Views\Shared\" />
     <Folder Include="assets\js\" />
     <Folder Include="Dtos\" />
     <Folder Include="wwwroot\images\products\" />
