@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.EntityFrameworkCore;
 using SkyBookWeb.Application.Implements;
 using SkyBookWeb.Application.Interfaces;
@@ -17,8 +18,15 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SQLConnection"));
 });
 
-//builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDBContext>();
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDBContext>();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+{
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequiredLength = 6;
+})
+    .AddEntityFrameworkStores<ApplicationDBContext>();
 
 //File Service
 builder.Services.AddScoped<IFileService>(provider =>
@@ -36,6 +44,9 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var logger = services.GetService<ILoggerFactory>();
+
+    string[] roleNames = { SkyBookWeb.Utilty.Constant.RoleEmployee, SkyBookWeb.Utilty.Constant.RoleCustomer, SkyBookWeb.Utilty.Constant.RoleAdmin };
+
     try
     {
         var context = services.GetService<ApplicationDBContext>();

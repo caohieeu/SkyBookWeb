@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using SkyBookWeb.Core.Entities;
 using SkyBookWeb.Models.ViewModels;
 
@@ -23,18 +24,35 @@ namespace SkyBookWeb.Areas.Identity.Controllers
         }
         [HttpPost]
         [ActionName("Login")]
-        public IActionResult LoginPost(LoginVM loginVM)
+        public async Task<IActionResult> LoginPost(LoginVM loginVM)
         {
             if(!ModelState.IsValid)
             {
                 return View(loginVM);
             }
 
-            return View();
+            var result = await _signInManager.PasswordSignInAsync
+                (loginVM.Email, loginVM.Password, loginVM.RememberMe, lockoutOnFailure: false);
+
+            if(result.Succeeded)
+            {
+                return RedirectToAction("Index", "Home", new { area = "Customer" });
+            }
+            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+
+            return View(loginVM);
         }
         public IActionResult Register()
         {
-            return View();
+            var model = new RegisterVM
+            {
+                RoleList = [
+                    new SelectListItem { Text = Utilty.Constant.RoleCustomer, Value = Utilty.Constant.RoleCustomer },
+                    new SelectListItem { Text = Utilty.Constant.RoleEmployee, Value = Utilty.Constant.RoleEmployee },
+                    new SelectListItem { Text = Utilty.Constant.RoleAdmin, Value = Utilty.Constant.RoleAdmin }
+                ]
+            };
+            return View(model);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -50,11 +68,12 @@ namespace SkyBookWeb.Areas.Identity.Controllers
             {
                 Name = registerVM.Name,
                 Email = registerVM.Email,
+                UserName = registerVM.Email,
                 PhoneNumber = registerVM.PhoneNumber,
                 StreetAddress = registerVM.StreetAddress,
                 City = registerVM.City,
                 State = registerVM.State,
-                PostalCode = registerVM.PostalCode
+                PostalCode = registerVM.PostalCode,
             };
 
             var result = await _userManager.CreateAsync(user, registerVM.Password);
@@ -71,6 +90,12 @@ namespace SkyBookWeb.Areas.Identity.Controllers
             }
 
             return View(registerVM);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home", new { area = "Customer" });
         }
         public IActionResult AccessDenied()
         {

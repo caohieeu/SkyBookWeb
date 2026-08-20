@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace SkyBookWeb.Models.ViewModels
 {
@@ -25,5 +27,8 @@ namespace SkyBookWeb.Models.ViewModels
         public int? PostalCode { get; set; }
         [DisplayName("Phone Number")]
         public string PhoneNumber { get; set; }
+        public string Role { get; set; }
+        [ValidateNever]
+        public IEnumerable<SelectListItem> RoleList { get; set; }
     }
 }

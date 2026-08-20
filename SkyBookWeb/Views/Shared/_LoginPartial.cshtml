@@ -1,6 +1,25 @@
-<div class="d-flex align-items-center gap-5">
-	<a asp-area="Identity" asp-controller="Account" asp-action="Register"
-	   class="text-white-50 text-decoration-none small fw-medium nav-link-hover">Register</a>
-	<a asp-area="Identity" asp-controller="Account" asp-action="Login"
-	   class="btn btn-accent fw-semibosld">Login</a>
-</div>
+@using Microsoft.AspNetCore.Identity;
+
+@inject UserManager<ApplicationUser> UserManager;
+@inject SignInManager<ApplicationUser> signInManager;
+
+@if(signInManager.IsSignedIn(User))
+{
+	<a class="text-white-50 text-decoration-none small fw-medium me-3">
+		<i class="bi bi-person-circle me-1"></i> @UserManager.GetUserName(User)
+	</a>
+	<form method="post" asp-controller="Account" asp-action="Logout" asp-area="Identity">
+		<button type="submit" class="btn btn-sm btn-outline-light" style="font-size: 0.7rem; letter-spacing: 0.05rem; text-transform: uppercase">
+			Logout
+		</button>
+	</form>
+}
+else
+{
+	<div class="d-flex align-items-center gap-5">
+		<a asp-area="Identity" asp-controller="Account" asp-action="Register"
+		   class="text-white-50 text-decoration-none small fw-medium nav-link-hover">Register</a>
+		<a asp-area="Identity" asp-controller="Account" asp-action="Login"
+		   class="btn btn-accent fw-semibosld">Login</a>
+	</div>
+}
