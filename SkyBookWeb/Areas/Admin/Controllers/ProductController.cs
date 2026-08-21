@@ -1,14 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using SkyBookWeb.Application;
 using SkyBookWeb.Application.Common;
 using SkyBookWeb.Application.Interfaces;
 using SkyBookWeb.Core.Entities;
 using SkyBookWeb.Models.ViewModels;
+using SkyBookWeb.Utilty;
 
 namespace SkyBookWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = Constant.RoleAdmin)]
     public class ProductController : Controller
     {
         private readonly IProductService _productService;

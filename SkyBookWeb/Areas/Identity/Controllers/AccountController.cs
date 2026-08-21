@@ -1,8 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Reflection.PortableExecutable;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SkyBookWeb.Core.Entities;
+using SkyBookWeb.Helpers;
 using SkyBookWeb.Models.ViewModels;
 
 namespace SkyBookWeb.Areas.Identity.Controllers
@@ -18,13 +20,14 @@ namespace SkyBookWeb.Areas.Identity.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
         }
-        public IActionResult Login()
+        public IActionResult Login(string? returnUrl = null)
         {
+            ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
         [HttpPost]
         [ActionName("Login")]
-        public async Task<IActionResult> LoginPost(LoginVM loginVM)
+        public async Task<IActionResult> LoginPost(LoginVM loginVM, string? returnUrl = null)
         {
             if(!ModelState.IsValid)
             {
@@ -36,31 +39,34 @@ namespace SkyBookWeb.Areas.Identity.Controllers
 
             if(result.Succeeded)
             {
+                if(!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                {
+                    return Redirect(returnUrl);
+                }
+
                 return RedirectToAction("Index", "Home", new { area = "Customer" });
             }
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");
 
             return View(loginVM);
         }
-        public IActionResult Register()
+        public IActionResult Register(string? returnUrl = null)
         {
+            ViewData["ReturnUrl"] = returnUrl;
             var model = new RegisterVM
             {
-                RoleList = [
-                    new SelectListItem { Text = Utilty.Constant.RoleCustomer, Value = Utilty.Constant.RoleCustomer },
-                    new SelectListItem { Text = Utilty.Constant.RoleEmployee, Value = Utilty.Constant.RoleEmployee },
-                    new SelectListItem { Text = Utilty.Constant.RoleAdmin, Value = Utilty.Constant.RoleAdmin }
-                ]
+                RoleList = PopulateDataHelpers.PopulateRoleData()
             };
             return View(model);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ActionName("Register")]
-        public async Task<IActionResult> Register(RegisterVM registerVM)
+        public async Task<IActionResult> Register(RegisterVM registerVM, string? returnUrl = null)
         {
             if (!ModelState.IsValid)
             {
+                registerVM.RoleList = PopulateDataHelpers.PopulateRoleData();
                 return View(registerVM);
             }
 
@@ -80,7 +86,22 @@ namespace SkyBookWeb.Areas.Identity.Controllers
 
             if(result.Succeeded)
             {
-                await _signInManager.SignInAsync(user, isPersistent: false);
+                if(!string.IsNullOrEmpty(registerVM.Role))
+                {
+                    await _userManager.AddToRoleAsync(user, registerVM.Role);
+                }
+                else
+                {
+                    await _userManager.AddToRoleAsync(user, Utilty.Constant.RoleCustomer);
+                }
+
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+
+                if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                {
+                    return Redirect(returnUrl);
+                }
+
                 return RedirectToAction("Index", "Home", new { area = "Customer" });
             }
 

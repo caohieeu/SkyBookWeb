@@ -18,15 +18,7 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SQLConnection"));
 });
 
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
-{
-    options.Password.RequireDigit = true;
-    options.Password.RequireLowercase = true;
-    options.Password.RequireUppercase = true;
-    options.Password.RequireNonAlphanumeric = true;
-    options.Password.RequiredLength = 6;
-})
-    .AddEntityFrameworkStores<ApplicationDBContext>();
+builder.Services.AddIdentityServices();
 
 //File Service
 builder.Services.AddScoped<IFileService>(provider =>
@@ -44,8 +36,10 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var logger = services.GetService<ILoggerFactory>();
-
-    string[] roleNames = { SkyBookWeb.Utilty.Constant.RoleEmployee, SkyBookWeb.Utilty.Constant.RoleCustomer, SkyBookWeb.Utilty.Constant.RoleAdmin };
+    var roleManager = services.GetService<RoleManager<IdentityRole>>(); 
+    
+    string[] roleNames = { SkyBookWeb.Utilty.Constant.RoleEmployee,
+        SkyBookWeb.Utilty.Constant.RoleCustomer, SkyBookWeb.Utilty.Constant.RoleAdmin };
 
     try
     {
@@ -55,12 +49,31 @@ using (var scope = app.Services.CreateScope())
             await DataContextSeed.SeedAsync(context, logger);
         }
 
+        if (roleManager != null)
+        {
+            foreach (var role in roleNames)
+            {
+                if (!await roleManager.RoleExistsAsync(role))
+                {
+                    await roleManager.CreateAsync(new IdentityRole(role));
+                }
+            }
+        }
+
     } catch(Exception ex)
     {
         var loggerDbContext = logger.CreateLogger<ApplicationDBContext>();
-        loggerDbContext.LogError(ex, "Something went wrong with migration");
+        loggerDbContext.LogError(ex, "An error occured during application startup");
     }
 }
+
+using(var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    
+}
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

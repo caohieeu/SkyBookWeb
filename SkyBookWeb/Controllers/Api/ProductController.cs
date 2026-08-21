@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using SkyBookWeb.Application;
@@ -6,11 +7,13 @@ using SkyBookWeb.Application.Common;
 using SkyBookWeb.Application.Interfaces;
 using SkyBookWeb.Core.Entities;
 using SkyBookWeb.Core.Specifications;
+using SkyBookWeb.Utilty;
 
 namespace SkyBookWeb.Controllers.Api
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = Constant.RoleAdmin)]
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
@@ -22,6 +25,7 @@ namespace SkyBookWeb.Controllers.Api
             _fileService = fileService;
         }
 
+        [AllowAnonymous]
         [HttpGet("GetAll")]
         public async Task<string> GetAll([FromQuery] ProductSpecPrams productSpecPrams)
         {
