@@ -13,14 +13,14 @@ namespace SkyBookWeb.Areas.Admin.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Dashboard()
         {
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Index()
         {
-            return View();
+            return RedirectToAction(nameof(Dashboard));
         }
     }
 }
