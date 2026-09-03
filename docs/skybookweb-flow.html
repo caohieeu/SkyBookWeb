@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SkyBookWeb - Code Flow & Specification Pattern</title>
+  <style>
+    :root {
+      --bg: #f6f8fa;
+      --panel: #ffffff;
+      --text: #1f2328;
+      --muted: #59636e;
+      --border: #d1d9e0;
+      --accent: #0969da;
+      --accent-soft: #ddf4ff;
+      --code-bg: #f6f8fa;
+      --success: #1a7f37;
+      --warning: #9a6700;
+      --danger: #cf222e;
+      --radius: 10px;
+      --shadow: 0 4px 18px rgba(31, 35, 40, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+      color: #fff;
+      padding: 48px 24px;
+      text-align: center;
+    }
+    header h1 { margin: 0 0 8px; font-size: 2rem; }
+    header p { margin: 0; color: #8b949e; }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 18px 22px;
+      background: var(--accent-soft);
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      user-select: none;
+    }
+    .card-header h2 { margin: 0; font-size: 1.25rem; color: var(--accent); }
+    .card-header .toggle { font-size: 1.2rem; color: var(--accent); transition: transform .2s; }
+    .card.collapsed .toggle { transform: rotate(-90deg); }
+    .card.collapsed .card-body { display: none; }
+
+    .card-body { padding: 22px; }
+
+    h3 { margin-top: 28px; color: var(--text); font-size: 1.1rem; }
+    h3:first-child { margin-top: 0; }
+
+    p, li { color: var(--text); }
+    ul { padding-left: 22px; }
+    li { margin-bottom: 6px; }
+
+    .muted { color: var(--muted); font-size: .92rem; }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: .78rem;
+      font-weight: 600;
+      margin-right: 6px;
+    }
+    .badge.core { background: #ffebe9; color: var(--danger); }
+    .badge.infra { background: #fff8c5; color: var(--warning); }
+    .badge.app { background: #dafbe1; color: var(--success); }
+    .badge.web { background: #ddf4ff; color: var(--accent); }
+
+    .file-path {
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
+      font-size: .88rem;
+      background: var(--code-bg);
+      padding: 6px 10px;
+      border-radius: 6px;
+      border-left: 3px solid var(--accent);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      overflow-x: auto;
+      font-size: .88rem;
+      line-height: 1.55;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
+      color: var(--text);
+    }
+
+    .flow-step {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      align-items: flex-start;
+    }
+    .step-number {
+      flex: 0 0 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: .95rem;
+    }
+    .step-content { flex: 1; }
+    .step-content strong { color: var(--accent); }
+
+    .note {
+      background: #fff8c5;
+      border-left: 4px solid var(--warning);
+      padding: 14px 16px;
+      border-radius: 6px;
+      color: var(--text);
+    }
+    .note.danger { background: #ffebe9; border-left-color: var(--danger); }
+
+    footer {
+      text-align: center;
+      padding: 32px;
+      color: var(--muted);
+      font-size: .88rem;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>SkyBookWeb - Code Flow</h1>
+  <p>Documentation for Specification Pattern, Repository, UnitOfWork, Service & DI flow</p>
+</header>
+
+<main class="container">
+
+  <!-- 1. Overview -->
+  <section class="card">
+    <div class="card-header" onclick="toggle(this)">
+      <h2>1. Tổng quan kiến trúc</h2>
+      <span class="toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <p>Project chia theo kiến trúc <strong>Clean Architecture / Onion</strong> đơn giản với 4 project chính:</p>
+      <ul>
+        <li><span class="badge core">Core</span> <strong>SkyBookWeb.Core</strong> — Entities, Interfaces, Specifications. Không phụ thuộc EF Core.</li>
+        <li><span class="badge infra">Infra</span> <strong>SkyBookWeb.Infrastructure</strong> — DbContext, Repositories, UnitOfWork, SpecificationEvaluator.</li>
+        <li><span class="badge app">App</span> <strong>SkyBookWeb.Application</strong> — Services, DTOs, AutoMapper profiles.</li>
+        <li><span class="badge web">Web</span> <strong>SkyBookWeb</strong> — Controllers, Views, DI registration.</li>
+      </ul>
+      <p class="muted">Luồng dữ liệu: Controller → Service → Repository/UnitOfWork → SpecificationEvaluator → EF Core → SQL Server.</p>
+    </div>
+  </section>
+
+  <!-- 2. Specification Pattern -->
+  <section class="card">
+    <div class="card-header" onclick="toggle(this)">
+      <h2>2. Specification Pattern - Flow chi tiết</h2>
+      <span class="toggle">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="flow-step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <strong>Định nghĩa contract</strong> <span class="badge core">Core</span>
+          <span class="file-path">SkyBookWeb.Core/Specifications/ISpecifications.cs</span>
+          <p>Spec chứa các thành phần: <code>Criteria</code> (where), <code>Includes</code> (include), <code>OrderBy</code>, <code>OrderByDescending</code>, <code>Skip/Take</code> paging.</p>
+          <pre><code>public interface ISpecifications<T>
+{
+    Expression<Func<T, bool>> Criteria { get; }
+    List<Expression<Func<T, object>>> Includes { get; }
+    Expression<Func<T, object>> OrderBy { get; }
+    Expression<Func<T, object>> OrderByDescending { get; }
+    int Skip { get; }
+    int Take { get; }
+    bool IsPagingEnabled { get; }
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <strong>Base class cài đặt</strong> <span class="badge core">Core</span>
+          <span class="file-path">SkyBookWeb.Core/Specifications/BaseSpecification.cs</span>
+          <p>Cung cấp setter/protected methods để các spec cụ thể build query.</p>
+          <pre><code>public class BaseSpecification<T> : ISpecifications<T>
+{
+    public Expression<Func<T, bool>> Criteria { get; private set; }
+    public List<Expression<Func<T, object>>> Includes { get; } = new();
+    public Expression<Func<T, object>> OrderBy { get; private set; }
+    public Expression<Func<T, object>> OrderByDescending { get; private set; }
+    public int Skip { get; private set; }
+    public int Take { get; private set; }
+    public bool IsPagingEnabled { get; private set; }
+
+    public BaseSpecification() { }
+    public BaseSpecification(Expression<Func<T, bool>> criteria) => Criteria = criteria;
+
+    protected void AddInclude(Expression<Func<T, object>> include) => Includes.Add(include);
+    protected void AddOrderBy(Expression<Func<T, object>> expr) => OrderBy = expr;
+    protected void AddOrderByDescending(Expression<Func<T, object>> expr) => OrderByDescending = expr;
+    protected void ApplyPaging(int take, int skip)
+    {
+        Take = take; Skip = skip; IsPagingEnabled = true;
+    }
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <strong>Tạo specification cụ thể</strong> <span class="badge core">Core</span>
+          <span class="file-path">SkyBookWeb.Core/Specifications/ProductWithSecification.cs</span>
+          <p>Nhận <code>ProductSpecPrams</code> từ query string, build filter/sort/paging/include.</p>
+          <pre><code>public class ProductWithSecification : BaseSpecification<Product>
+{
+    public ProductWithSecification([FromQuery] ProductSpecPrams p)
+        : base(x =>
+            (string.IsNullOrEmpty(p.Search) || x.Title.Contains(p.Search.Trim())) &&
+            (!p.CategoryId.HasValue || x.CategoryId == p.CategoryId) &&
+            (!p.Id.HasValue || x.Id == p.Id)
+        )
+    {
+        if (p.IncludeCategory) AddInclude(x => x.Category);
+
+        AddOrderBy(x => x.Title);
+        ApplyPaging(p.PageSize, p.PageSize * (p.PageIndex - 1));
+
+        if (!string.IsNullOrEmpty(p.Sort))
+        {
+            switch (p.Sort)
+            {
+                case "priceAsc":  AddOrderBy(x => x.Price); break;
+                case "priceDesc": AddOrderByDescending(x => x.Price); break;
+                case "authorAsc": AddOrderBy(x => x.Author); break;
+                case "authorDesc":AddOrderByDescending(x => x.Author); break;
+                case "isbnAsc":   AddOrderBy(x => x.ISBN); break;
+                case "isbnDesc":  AddOrderByDescending(x => x.ISBN); break;
+                default:          AddOrderBy(x => x.Title); break;
+            }
+        }
+    }
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <strong>Query object</strong> <span class="badge core">Core</span>
+          <span class="file-path">SkyBookWeb.Core/Specifications/ProductSpecPrams.cs</span>
+          <pre><code>public class ProductSpecPrams
+{
+    private const int MaxPageSize = 50;
+    public int PageIndex { get; set; } = 1;
+    private int pageSize { get; set; } = 10;
+    public int PageSize
+    {
+        get => pageSize;
+        set => pageSize = (value > MaxPageSize) ? MaxPageSize : value;
+    }
+    public int? CategoryId { get; set; }
+    public bool IncludeCategory { get; set; } = false;
+    public int? Id { get; set; }
+    public string? Sort { get; set; } = string.Empty;
+    private string? search;
+    public string? Search
+    {
+        get => search;
+        set => search = value?.ToLower() ?? string.Empty;
+    }
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="step-number">5</div>
+        <div class="step-content">
+          <strong>Biên dịch spec thành IQueryable</strong> <span class="badge infra">Infra</span>
+          <span class="file-path">SkyBookWeb.Infrastructure/Data/SpecificationEvaluator.cs</span>
+          <p>Áp dụng lần lượt where → order → paging → includes.</p>
+          <pre><code>public class SpecificationEvaluator<T> where T : BaseEntity
+{
+    public static IQueryable<T> GetQuery(IQueryable<T> inputQuery, ISpecifications<T> spec)
+    {
+        var query = inputQuery.AsQueryable();
+
+        if (spec.Criteria != null) query = query.Where(spec.Criteria);
+        if (spec.OrderBy != null) query = query.OrderBy(spec.OrderBy);
+        if (spec.OrderByDescending != null) query = query.OrderByDescending(spec.OrderByDescending);
+        if (spec.IsPagingEnabled) query = query.Skip(spec.Skip).Take(spec.Take);
+        query = spec.Includes.Aggregate(query, (current, include) => current.Include(include));
+
+        return query;
+    }
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="step-number">6</div>
+        <div class="step-content">
+          <strong>Repository dùng spec</strong> <span class="badge infra">Infra</span>
+          <span class="file-path">SkyBookWeb.Infrastructure/Repositories/GenericRepository.cs</span>
+          <pre><code>public async Task<T> GetEntityWithSpec(ISpecifications<T> specifications)
+    => await ApplySpecification(specifications).FirstOrDefaultAsync();
+
+public async Task<IEnumerable<T>> ListAsync(ISpecifications<T> specifications)
+    => await ApplySpecification(specifications).ToListAsync();
+
+public IQueryable<T> ApplySpecification(ISpecifications<T> specifications)
+    => SpecificationEvaluator<T>.GetQuery(_dbContext.Set<T>(), specifications);</code></pre>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="step-number">7</div>
+        <div class="step-content">
+          <strong>Service gọi repository</strong> <span class="badge app">App</span>
+          <span class="file-path">SkyBookWeb.Application/Implements/ProductService.cs</span>
+          <pre><code>public async Task<IEnumerable<ProductDto>> GetAllWithSpecification(ProductSpecPrams p)
+{
+    p.IncludeCategory = true;
+    var spec = new ProductWithSecification(p);
+
+    var products = await _productRepository.ListAsync(spec);
+    return products.Select(x => _mapper.Map<ProductDto>(x));
+}
+
+public async Task<Product> GetProductByIdAsync(int? id, bool includeCategory = false)
+{
+    if (id == null) return null;
+
+    var spec = new ProductWithSecification(
+        new ProductSpecPrams() { Id = id, IncludeCategory = true });
+    return await _unitOfWork.Repository<Product>().GetEntityWithSpec(spec);
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="step-number">8</div>
+        <div class="step-content">
+          <strong>Controller nhận request</strong> <span class="badge web">Web</span>
+          <span class="file-path">SkyBookWeb/Controllers/Api/ProductController.cs</span>
+          <pre><code>[AllowAnonymous]
+[HttpGet("GetAll")]
+public async Task<string> GetAll([FromQuery] ProductSpecPrams productSpecPrams)
+{
+    var products = await _productService.GetAllWithSpecification(productSpecPrams);
+    return JsonConvert.SerializeObject(products.ToList(), serializerSettings);
+}</code></pre>
+          <span class="file-path">SkyBookWeb/Areas/Customer/Controllers/HomeController.cs</span>
+          <pre><code>public async Task<IActionResult> Index()
+{
+    var specParam = new ProductSpecPrams() { PageSize = 8 };
+    var products = await _productService.GetAllWithSpecification(specParam);
+    return View(products);
+}</code></pre>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 3. DI -->
+  <section class="card">
+    <div class="card-header" onclick="toggle(this)">
+      <h2>3. Dependency Injection</h2>
+      <span class="toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <span class="file-path">SkyBookWeb/Extensions/ApplicationServicesExtensions.cs</span>
+      <pre><code>public static void AddApplicationServices(this IServiceCollection services)
+{
+    services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+    services.AddScoped<IUnitOfWork, UnitOfWork>();
+    services.AddScoped<ICategoryService, CategoryService>();
+    services.AddScoped<IProductService, ProductService>();
+
+    services.AddTransient<MappingProfiles.ProductMapping>();
+
+    services.AddAutoMapper(cfg =>
+    {
+        cfg.AddMaps(typeof(MappingProfiles).Assembly);
+    });
+}</code></pre>
+      <span class="file-path">SkyBookWeb/Program.cs</span>
+      <pre><code>builder.Services.AddScoped<IFileService>(provider =>
+{
+    return new FileService(builder.Environment.WebRootPath);
+});
+
+builder.Services.AddApplicationServices();</code></pre>
+      <p class="muted"><code>IFileService</code> cần <code>WebRootPath</code> nên register trực tiếp trong Program.cs.</p>
+    </div>
+  </section>
+
+  <!-- 4. AutoMapper -->
+  <section class="card">
+    <div class="card-header" onclick="toggle(this)">
+      <h2>4. AutoMapper & Custom Mapping Action</h2>
+      <span class="toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <span class="file-path">SkyBookWeb.Application/Helpers/MappingProfiles.cs</span>
+      <pre><code>public class MappingProfiles : Profile
+{
+    public MappingProfiles()
+    {
+        CreateMap<Product, ProductDto>()
+            .AfterMap<ProductMapping>();
+    }
+
+    public class ProductMapping : IMappingAction<Product, ProductDto>
+    {
+        private readonly IFileService _fileService;
+        public ProductMapping(IFileService fileService)
+        {
+            _fileService = fileService;
+        }
+        public void Process(Product source, ProductDto destination, ResolutionContext context)
+        {
+            destination.Category = source.Category.Name;
+            destination.ImageUrl = _fileService.GetImagePath(source?.ImageUrl);
+        }
+    }
+}</code></pre>
+      <p class="muted"><code>ProductMapping</code> cần được register <code>AddTransient<MappingProfiles.ProductMapping>()</code> để DI inject <code>IFileService</code>.</p>
+    </div>
+  </section>
+
+  <!-- 5. UnitOfWork -->
+  <section class="card">
+    <div class="card-header" onclick="toggle(this)">
+      <h2>5. UnitOfWork & Generic Repository</h2>
+      <span class="toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <span class="file-path">SkyBookWeb.Infrastructure/Data/UnitOfWork.cs</span>
+      <pre><code>public class UnitOfWork : IUnitOfWork
+{
+    public IGenericRepository<TEntity> Repository<TEntity>() where TEntity : BaseEntity
+    {
+        var Type = typeof(TEntity).Name;
+        if (!_repositories.ContainsKey(Type))
+        {
+            var typeGeneric = typeof(GenericRepository<>);
+            var repositoryInstance = Activator.CreateInstance(
+                typeGeneric.MakeGenericType(typeof(TEntity)),
+                _dbContext, _loggerFactory
+            );
+            _repositories.Add(Type, repositoryInstance);
+        }
+        return (IGenericRepository<TEntity>)_repositories[Type];
+    }
+
+    public async Task<bool> Complete() => await _dbContext.SaveChangesAsync() > 0;
+}</code></pre>
+      <p class="muted">Mỗi entity type chỉ tạo 1 repository instance trong lifetime scope.</p>
+    </div>
+  </section>
+
+  <!-- 6. Summary -->
+  <section class="card">
+    <div class="card-header" onclick="toggle(this)">
+      <h2>6. Tóm tắt flow request</h2>
+      <span class="toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <ol>
+        <li>Client gọi URL: <code>/api/product/getall?search=abc&categoryId=1&sort=priceAsc&pageIndex=1&pageSize=10</code></li>
+        <li>ASP.NET model bind vào <code>ProductSpecPrams</code>.</li>
+        <li><code>ProductController</code> truyền vào <code>_productService.GetAllWithSpecification(specParams)</code>.</li>
+        <li><code>ProductService</code> tạo <code>ProductWithSecification</code>.</li>
+        <li><code>ProductWithSecification</code> build Criteria, Includes, OrderBy, ApplyPaging.</li>
+        <li><code>GenericRepository.ListAsync(spec)</code> gọi <code>SpecificationEvaluator.GetQuery(...)</code>.</li>
+        <li>EF Core translate thành SQL và execute.</li>
+        <li>Trả về <code>Product</code>s → mapping sang <code>ProductDto</code> → serialize JSON.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 7. Notes -->
+  <section class="card">
+    <div class="card-header" onclick="toggle(this)">
+      <h2>7. Lưu ý quan trọng</h2>
+      <span class="toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="note">
+        <strong>Ghi chú logic:</strong>
+        <ul>
+          <li><code>ProductService</code> inject cả <code>IGenericRepository<Product></code> lẫn <code>IUnitOfWork</code> — dùng 2 cách khác nhau tùy method.</li>
+          <li><code>ProductWithSecification</code> luôn gọi <code>AddOrderBy(x => x.Title)</code> trước rồi sau đó <code>switch</code> sort — nếu sort không empty thì order sẽ bị ghi đè cuối cùng.</li>
+          <li>Công thức paging: <code>Skip = PageSize * (PageIndex - 1)</code>, <code>Take = PageSize</code>.</li>
+          <li><code>IncludeCategory</code> mặc định <code>false</code>, nhưng <code>ProductService.GetAllWithSpecification()</code> tự set <code>true</code>.</li>
+        </ul>
+      </div>
+      <div class="note danger" style="margin-top:16px;">
+        <strong>Điểm cần review:</strong>
+        <ul>
+          <li>Trong <code>Program.cs</code> gọi <code>app.UseAuthorization()</code> 2 lần — có thể xóa 1 lần.</li>
+          <li>Trong <code>ApplicationServicesExtensions.cs</code> đường dẫn logout bị typo <code>"lougout"</code>.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Tài liệu được tạo tự động cho project SkyBookWeb.
+</footer>
+
+<script>
+  function toggle(header) {
+    const card = header.closest('.card');
+    card.classList.toggle('collapsed');
+  }
+</script>
+
+</body>
+</html>
