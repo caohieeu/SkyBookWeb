@@ -36,12 +36,11 @@ namespace SkyBookWeb.Application.Implements
         }
         public async Task<ServiceResult<Product>> UpsertAsync(Product product)
         {
-            var isExisted = await _unitOfWork
-                    .Repository<Product>()
-                    .ExistAsync(c => c.Title.ToLower() == product.Title.ToLower());
-
             if (product.Id == 0)
             {
+                var isExisted = await _unitOfWork
+                        .Repository<Product>()
+                        .ExistAsync(c => c.Title.ToLower() == product.Title.ToLower());
                 if (isExisted)
                 {
                     return ServiceResult<Product>.FromFailure("This product name existed");

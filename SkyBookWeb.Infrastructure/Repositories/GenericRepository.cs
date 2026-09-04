@@ -91,5 +91,15 @@ namespace SkyBookWeb.Infrastructure.Repositories
         {
             return SpecificationEvaluator<T>.GetQuery(_dbContext.Set<T>(), specifications);
         }
+
+        public async Task<int> CountAsync(ISpecifications<T> specifications)
+        {
+            return await ApplySpecification(specifications).CountAsync();
+        }
+
+        public void DeleteRange(IEnumerable<T> entities)
+        {
+            _dbContext.RemoveRange(entities);
+        }
     }
 }
