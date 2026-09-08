@@ -50,7 +50,7 @@
                                     }
                                 </div>
                             <!-- TODO: Link to details page with product ID -->
-                            <a href="#" class="btn btn-sm btn-outline-dark">
+                            <a asp-controller="Product" asp-action="Detail" asp-route-productId="@item.Id" class="btn btn-sm btn-outline-dark">
                                 View
                             </a>
                         </div>

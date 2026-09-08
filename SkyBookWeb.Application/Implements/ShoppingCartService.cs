@@ -7,10 +7,10 @@ namespace SkyBookWeb.Application.Implements
 {
     public class ShoppingCartService : IShoppingCartService
     {
-        private readonly IUnitOfWork _unitOfWork;
-        public ShoppingCartService(IUnitOfWork unitOfWork)
+        private readonly IGenericRepository<ShoppingCart> _shoppingCartRepository;
+        public ShoppingCartService(IGenericRepository<ShoppingCart> shoppingCartRepository)
         {
-            _unitOfWork = unitOfWork;
+            _shoppingCartRepository = shoppingCartRepository;
         }
 
         public async Task ClearCartAsync(string userId)
@@ -19,29 +19,64 @@ namespace SkyBookWeb.Application.Implements
 
             if(cartItems != null && cartItems.Any())
             {
-                _unitOfWork.Repository<ShoppingCart>().DeleteRange(cartItems);
-                await _unitOfWork.Complete();
+                _shoppingCartRepository.DeleteRange(cartItems);
+                await _shoppingCartRepository.SaveChangeAsync();
             }
         }
 
         public async Task<ShoppingCart> GetCartByIdAsync(int cartId)
         {
             var spec = new ShoppingCartSpecification(cartId: cartId);
-            var cart = await _unitOfWork.Repository<ShoppingCart>().GetEntityWithSpec(spec);
+            var cart = await _shoppingCartRepository.GetEntityWithSpec(spec);
             return cart;
         }
 
         public async Task<int> GetCartCountAsync(string userId)
         {
-            var cartItems = await _unitOfWork.Repository<ShoppingCart>().GetAllAsync(x => x.ApplicationId == userId);
+            var cartItems = await _shoppingCartRepository.GetAllAsync(x => x.ApplicationUserId == userId);
             return cartItems.Sum(x => x.Count);
         }
 
         public async Task<IEnumerable<ShoppingCart>> GetUserCartItemsAsync(string userId)
         {
             var spec = new ShoppingCartSpecification(userId: userId);
-            var items = await _unitOfWork.Repository<ShoppingCart>().ListAsync(spec);
+            var items = await _shoppingCartRepository.ListAsync(spec);
             return items;
+        }
+
+        public async Task<ShoppingCart> AddToCartAsync(ShoppingCart shoppingCart)
+        {
+            var spec = new ShoppingCartSpecification(userId: shoppingCart.ApplicationUserId);
+            var exixstingItem = await _shoppingCartRepository.GetEntityWithSpec(spec);
+            if (exixstingItem != null)
+            {
+                exixstingItem.Count += shoppingCart.Count;
+                await _shoppingCartRepository.SaveChangeAsync();
+
+                return exixstingItem;
+            }
+            else
+            {
+                _shoppingCartRepository.Add(shoppingCart);
+                await _shoppingCartRepository.SaveChangeAsync();
+
+                return shoppingCart;
+            }
+
+        }
+
+        public async Task UpdateCartAsync(ShoppingCart shoppingCart)
+        {
+            if(shoppingCart.Count <= 0)
+            {
+                _shoppingCartRepository.Delete(shoppingCart);
+            }
+            else
+            {
+                _shoppingCartRepository.Update(shoppingCart);
+            }
+
+            await _shoppingCartRepository.SaveChangeAsync();
         }
     }
 }

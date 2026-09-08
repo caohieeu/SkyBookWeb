@@ -10,8 +10,8 @@ namespace SkyBookWeb.Core.Entities
 {
     public class OrderHeader : BaseEntity
     {
-        public string ApplicationId { get; set; }
-        [ForeignKey("ApplicationId")]
+        public string ApplicationUserId { get; set; }
+        [ForeignKey("ApplicationUserId")]
         [ValidateNever]
         public ApplicationUser ApplicationUser { get; set; }
         public DateTime OrderDate { get; set; }

@@ -101,5 +101,10 @@ namespace SkyBookWeb.Infrastructure.Repositories
         {
             _dbContext.RemoveRange(entities);
         }
+
+        public async Task<int> SaveChangeAsync()
+        {
+            return await _dbContext.SaveChangesAsync();
+        }
     }
 }

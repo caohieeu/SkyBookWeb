@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Folder Include="Config\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
   <ItemGroup>

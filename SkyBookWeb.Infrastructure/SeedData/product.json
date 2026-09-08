@@ -1,90 +1,98 @@
 [
-  {
-    "Title": "Store of the Jungle",
-    "Author": "Alba Solver",
-    "Description": "A thrilling adventure deep in the heart of an uncharted jungle, where ancient secrets and hidden treasures await those brave enough to seek them.",
-    "ISBN": "JNG7777770001",
-    "ListPrice": 45,
-    "Price": 40,
-    "Price50": 35,
-    "Price100": 30,
-    "CategoryId": 1
-  },
-  {
-    "Title": "Money and Time",
-    "Author": "Bob Roarman",
-    "Description": "An insightful exploration of wealth, ambition, and the relentless passage of time. A story that challenges what it truly means to be rich.",
-    "ISBN": "MNT8888880001",
-    "ListPrice": 55,
-    "Price": 50,
-    "Price50": 45,
-    "Price100": 40,
-    "CategoryId": 3
-  },
-  {
-    "Title": "Secret of the Lake",
-    "Author": "Jessica Alban",
-    "Description": "A mysterious tale set around a remote lake where strange occurrences lead a young detective to uncover a decades-old secret buried beneath the water.",
-    "ISBN": "LKE9999990001",
-    "ListPrice": 35,
-    "Price": 30,
-    "Price50": 28,
-    "Price100": 25,
-    "CategoryId": 1
-  },
-  {
-    "Title": "Moon and Planets",
-    "Author": "Kristen Lober",
-    "Description": "A captivating journey through the cosmos, blending science and imagination as humanity reaches beyond the stars for the very first time.",
-    "ISBN": "SPC1010100001",
-    "ListPrice": 65,
-    "Price": 60,
-    "Price50": 55,
-    "Price100": 50,
-    "CategoryId": 2
-  },
-  {
-    "Title": "Forest and Dawn",
-    "Author": "Laura Goldberg",
-    "Description": "At the edge of an ancient forest, dawn reveals more than just light. A poetic novel about renewal, loss, and the quiet strength found in nature.",
-    "ISBN": "FRD1111110001",
-    "ListPrice": 30,
-    "Price": 27,
-    "Price50": 24,
-    "Price100": 20,
-    "CategoryId": 3
-  },
-  {
-    "Title": "The Whispering Grove",
-    "Author": "Elara Vance",
-    "Description": "Deep within a forgotten grove, the trees hold memories of those who came before. A hauntingly beautiful story of legacy and belonging.",
-    "ISBN": "WGR1212120001",
-    "ListPrice": 42,
-    "Price": 38,
-    "Price50": 34,
-    "Price100": 30,
-    "CategoryId": 1
-  },
-  {
-    "Title": "The Forgotten Cipher",
-    "Author": "Anya Ravenwood",
-    "Description": "A brilliant cryptographer stumbles upon an ancient code that could rewrite history. But cracking it means confronting a conspiracy centuries in the making.",
-    "ISBN": "CIP1313130001",
-    "ListPrice": 50,
-    "Price": 45,
-    "Price50": 40,
-    "Price100": 35,
-    "CategoryId": 2
-  },
-  {
-    "Title": "The Silent Orchard",
-    "Author": "Elara Vance",
-    "Description": "When silence falls over a once-thriving orchard, one woman returns to her childhood home to uncover the truth behind its abandonment and her family's past.",
-    "ISBN": "ORC1414140001",
-    "ListPrice": 38,
-    "Price": 34,
-    "Price50": 30,
-    "Price100": 26,
-    "CategoryId": 3
-  }
+    {
+        "Title": "Store of the Jungle",
+        "Author": "Alba Solver",
+        "Description": "A thrilling adventure deep in the heart of an uncharted jungle, where ancient secrets and hidden treasures await those brave enough to seek them.",
+        "ISBN": "JNG7777770001",
+        "ListPrice": 45,
+        "Price": 40,
+        "Price50": 35,
+        "Price100": 30,
+        "ImageUrl": "\\images\\products\\93f8645d-a264-4052-bbc6-4fc275c29b9b-Book 1.png",
+        "CategoryId": 1
+    },
+    {
+        "Title": "Money and Time",
+        "Author": "Bob Roarman",
+        "Description": "An insightful exploration of wealth, ambition, and the relentless passage of time. A story that challenges what it truly means to be rich.",
+        "ISBN": "MNT8888880001",
+        "ListPrice": 55,
+        "Price": 50,
+        "Price50": 45,
+        "Price100": 40,
+        "ImageUrl": "\\images\\products\\b5a79634-6afc-4235-871d-69ae17793ea6-Book 2.png",
+        "CategoryId": 3
+    },
+    {
+        "Title": "Secret of the Lake",
+        "Author": "Jessica Alban",
+        "Description": "A mysterious tale set around a remote lake where strange occurrences lead a young detective to uncover a decades-old secret buried beneath the water.",
+        "ISBN": "LKE9999990001",
+        "ListPrice": 35,
+        "Price": 30,
+        "Price50": 28,
+        "Price100": 25,
+        "ImageUrl": "\\images\\products\\fa1e8646-2a7f-43f9-94d6-e114e0417302-Book 3.png",
+        "CategoryId": 1
+    },
+    {
+        "Title": "Moon and Planets",
+        "Author": "Kristen Lober",
+        "Description": "A captivating journey through the cosmos, blending science and imagination as humanity reaches beyond the stars for the very first time.",
+        "ISBN": "SPC1010100001",
+        "ListPrice": 65,
+        "Price": 60,
+        "Price50": 55,
+        "Price100": 50,
+        "ImageUrl": "\\images\\products\\9c5f7661-cdc5-4d8f-88b8-6f5c64450afc-Book 4.png",
+        "CategoryId": 2
+    },
+    {
+        "Title": "Forest and Dawn",
+        "Author": "Laura Goldberg",
+        "Description": "At the edge of an ancient forest, dawn reveals more than just light. A poetic novel about renewal, loss, and the quiet strength found in nature.",
+        "ISBN": "FRD1111110001",
+        "ListPrice": 30,
+        "Price": 27,
+        "Price50": 24,
+        "Price100": 20,
+        "ImageUrl": "\\images\\products\\f8c092ad-ee84-4928-95cd-85e20bde2b2f-Book 5.png",
+        "CategoryId": 3
+    },
+    {
+        "Title": "The Whispering Grove",
+        "Author": "Elara Vance",
+        "Description": "Deep within a forgotten grove, the trees hold memories of those who came before. A hauntingly beautiful story of legacy and belonging.",
+        "ISBN": "WGR1212120001",
+        "ListPrice": 42,
+        "Price": 38,
+        "Price50": 34,
+        "Price100": 30,
+        "ImageUrl": "\\images\\products\\866f55df-5141-4bfd-8b36-eb709afa000c-Book 6.png",
+        "CategoryId": 1
+    },
+    {
+        "Title": "The Forgotten Cipher",
+        "Author": "Anya Ravenwood",
+        "Description": "A brilliant cryptographer stumbles upon an ancient code that could rewrite history. But cracking it means confronting a conspiracy centuries in the making.",
+        "ISBN": "CIP1313130001",
+        "ListPrice": 50,
+        "Price": 45,
+        "Price50": 40,
+        "Price100": 35,
+        "ImageUrl": "\\images\\products\\726dfe48-0e34-40f8-9fb2-6eac0e56c7c5-Book 7.png",
+        "CategoryId": 2
+    },
+    {
+        "Title": "The Silent Orchard",
+        "Author": "Elara Vance",
+        "Description": "When silence falls over a once-thriving orchard, one woman returns to her childhood home to uncover the truth behind its abandonment and her family's past.",
+        "ISBN": "ORC1414140001",
+        "ListPrice": 38,
+        "Price": 34,
+        "Price50": 30,
+        "Price100": 26,
+        "ImageUrl": "\\images\\products\\c5e51619-9008-4021-8cca-692e326b6149-Book 8.png",
+        "CategoryId": 3
+    }
 ]

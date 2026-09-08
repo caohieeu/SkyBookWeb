@@ -13,5 +13,7 @@ namespace SkyBookWeb.Application.Interfaces
         Task<IEnumerable<ShoppingCart>> GetUserCartItemsAsync(string userId);
         Task<int> GetCartCountAsync(string userId);
         Task ClearCartAsync(string userId);
+        Task<ShoppingCart> AddToCartAsync(ShoppingCart shoppingCart);
+        Task UpdateCartAsync(ShoppingCart shoppingCart);
     }
 }

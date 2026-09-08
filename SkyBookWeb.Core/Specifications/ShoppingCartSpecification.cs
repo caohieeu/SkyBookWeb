@@ -10,8 +10,8 @@ namespace SkyBookWeb.Core.Specifications
     public class ShoppingCartSpecification : BaseSpecification<ShoppingCart>
     {
         public ShoppingCartSpecification(string? userId = "", int? cartId = 0) : base(
-            x => ((string.IsNullOrEmpty(userId) || userId == x.ApplicationId) &&
-            (cartId == x.Id)))
+            x => ((string.IsNullOrEmpty(userId) || userId == x.ApplicationUserId) &&
+            (cartId == 0 || cartId == x.Id)))
         {
             AddInclude(x => x.Product);
         }
