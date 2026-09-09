@@ -29,10 +29,5 @@ namespace SkyBookWeb.Areas.Customer.Controllers
         {
             return View();
         }
-        
-        public IActionResult TestEndPoint()
-        {
-            return Json(new { data = "asd" });
-        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using SkyBookWeb.Application.Interfaces;
+﻿using AutoMapper;
+using SkyBookWeb.Application.Interfaces;
 using SkyBookWeb.Core.Entities;
 using SkyBookWeb.Core.Interfaces;
 using SkyBookWeb.Core.Specifications;
@@ -8,9 +9,12 @@ namespace SkyBookWeb.Application.Implements
     public class ShoppingCartService : IShoppingCartService
     {
         private readonly IGenericRepository<ShoppingCart> _shoppingCartRepository;
-        public ShoppingCartService(IGenericRepository<ShoppingCart> shoppingCartRepository)
+        private readonly IMapper _mapper;
+        public ShoppingCartService(IGenericRepository<ShoppingCart> shoppingCartRepository,
+            IMapper mapper)
         {
             _shoppingCartRepository = shoppingCartRepository;
+            _mapper = mapper;
         }
 
         public async Task ClearCartAsync(string userId)

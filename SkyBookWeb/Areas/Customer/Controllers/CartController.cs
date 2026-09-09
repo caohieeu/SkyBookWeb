@@ -1,11 +1,16 @@
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SkyBookWeb.Application;
 using SkyBookWeb.Application.Interfaces;
 using SkyBookWeb.Core.Specifications;
+using SkyBookWeb.Models.ViewModels;
 
 namespace SkyBookWeb.Areas.Customer.Controllers
 {
     [Area("Customer")]
+    [Authorize]
     public class CartController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -17,9 +22,20 @@ namespace SkyBookWeb.Areas.Customer.Controllers
             _shoppingCartService = shoppingCartService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var claimItems = (ClaimsIdentity)User.Identity;
+            var userId = claimItems?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var cartItems = await _shoppingCartService.GetUserCartItemsAsync(userId);
+
+            ShoppingCartVM shoppingCartVM = new ShoppingCartVM
+            {
+                ShoppingCartList = cartItems,
+                OrderHeader = new()
+            };
+
+            return View(shoppingCartVM);
         }
     }
 }
