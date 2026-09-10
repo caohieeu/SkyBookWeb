@@ -15,19 +15,19 @@ namespace SkyBookWeb.Areas.Customer.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IShoppingCartService _shoppingCartService;
+        private readonly IUserIdentityService _userIdentityService;
         public CartController(ILogger<HomeController> logger, 
-            IShoppingCartService shoppingCartService)
+            IShoppingCartService shoppingCartService,
+            IUserIdentityService userIdentityService)
         {
             _logger = logger;
             _shoppingCartService = shoppingCartService;
+            _userIdentityService = userIdentityService;
         }
 
         public async Task<IActionResult> Index()
         {
-            var claimItems = (ClaimsIdentity)User.Identity;
-            var userId = claimItems?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            var cartItems = await _shoppingCartService.GetUserCartItemsAsync(userId);
+            var cartItems = await _shoppingCartService.GetUserCartItemsAsync(_userIdentityService.GetUserId());
 
             ShoppingCartVM shoppingCartVM = new ShoppingCartVM
             {

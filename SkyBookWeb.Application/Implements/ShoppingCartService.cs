@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using SkyBookWeb.Application.Dtos;
 using SkyBookWeb.Application.Interfaces;
 using SkyBookWeb.Core.Entities;
 using SkyBookWeb.Core.Interfaces;
@@ -19,9 +20,10 @@ namespace SkyBookWeb.Application.Implements
 
         public async Task ClearCartAsync(string userId)
         {
-            var cartItems = await GetUserCartItemsAsync(userId);
+            var spec = new ShoppingCartSpecification(userId: userId);
+            var cartItems = await _shoppingCartRepository.ListAsync(spec);
 
-            if(cartItems != null && cartItems.Any())
+            if (cartItems != null && cartItems.Any())
             {
                 _shoppingCartRepository.DeleteRange(cartItems);
                 await _shoppingCartRepository.SaveChangeAsync();
@@ -41,16 +43,17 @@ namespace SkyBookWeb.Application.Implements
             return cartItems.Sum(x => x.Count);
         }
 
-        public async Task<IEnumerable<ShoppingCart>> GetUserCartItemsAsync(string userId)
+        public async Task<IEnumerable<ShoppingCartDto>> GetUserCartItemsAsync(string userId)
         {
             var spec = new ShoppingCartSpecification(userId: userId);
             var items = await _shoppingCartRepository.ListAsync(spec);
-            return items;
+            var result = items.Select(x => _mapper.Map<ShoppingCartDto>(x));
+            return result;
         }
 
         public async Task<ShoppingCart> AddToCartAsync(ShoppingCart shoppingCart)
         {
-            var spec = new ShoppingCartSpecification(userId: shoppingCart.ApplicationUserId);
+            var spec = new ShoppingCartSpecification(productId: shoppingCart.ProductId);
             var exixstingItem = await _shoppingCartRepository.GetEntityWithSpec(spec);
             if (exixstingItem != null)
             {

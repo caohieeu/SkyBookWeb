@@ -30,21 +30,15 @@
 
                 <!-- Details -->
                 <div class="col-lg-7 p-4 p-lg-5">
-                    <!-- TODO: Display category name dynamically -->
                     <span class="badge mb-3" style="background: rgba(23,163,74,0.1); color: #17A34A;">
                         <i class="bi bi-bookmark me-1"></i> @Model.Product.Category.Name
                     </span>
-                    <!-- TODO: Display product title -->
                     <h1 class="h3 fw-bold mb-1">@Model.Product.Title</h1>
-                    <!-- TODO: Display author name -->
                     <p class="text-secondary mb-2">by <span class="fw-medium text-dark">@Model.Product.Author</span></p>
-                    <!-- TODO: Display ISBN -->
                     <p class="text-secondary small mb-4">ISBN: @Model.Product.ISBN</p>
 
                     <div class="d-flex align-items-baseline gap-2 mb-4">
-                        <!-- TODO: Display Price (regular price) -->
                         <span class="h3 fw-bold mb-0" style="color: #17A34A;">@Model.Price.ToString("c")</span>
-                        <!-- TODO: Display ListPrice (strikethrough) -->
                         @if (Model.Product.ListPrice > Model.Price)
                         {
                             <span class="text-decoration-line-through text-secondary">@Model.Product.ListPrice.ToString("c")</span>

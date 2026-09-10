@@ -36,11 +36,11 @@
                             @foreach (var item in Model.ShoppingCartList)
                             {
                                 <div class="d-flex gap-3 px-4 py-3 border-bottom cart-item">
-                                    <a href="#" class="flex-shrink-0">
+                                    <a asp-controller="Product" asp-action="Detail" asp-route-productId="@item.ProductId" asp-area="Customer" class="flex-shrink-0">
                                         <div class="rounded overflow-hidden" style="width: 56px; height: 72px;">
                                             @if(!string.IsNullOrEmpty(item.Product.ImageUrl))
                                             {
-                                                <img src="https://placehold.co/56x72" class="w-100 h-100" style="object-fit: cover;" alt="Product" />
+                                                <img src="@item.Product.ImageUrl" class="w-100 h-100" style="object-fit: cover;" alt="Product" />
                                             }
                                             else
                                             {
@@ -51,14 +51,14 @@
 
                                     <div class="flex-grow-1" style="min-width: 0;">
                                         <a href="#" class="fw-semibold text-decoration-none d-block text-truncate" style="font-size: 0.85rem;">
-                                            Product Title
+                                            @item.Product.Title
                                         </a>
-                                        <p class="text-secondary mb-2" style="font-size: 0.7rem;">by Author Name @item.Product.Author $19.99 each</p>
+                                        <p class="text-secondary mb-2" style="font-size: 0.7rem;">by Author Name @item.Product.Author @item.Product.Price.ToString("c") each</p>
 
                                         <div class="d-flex align-items-center gap-2">
                                             <div class="input-group" style="width: 130px;">
                                                 <a href="#" class="btn btn-outline-secondary btn-sm px-2"><i class="bi bi-dash"></i></a>
-                                                <input type="number" value="1" min="1"
+                                                <input type="number" value="@item.Count" min="1"
                                                        class="form-control form-control-sm text-center fw-bold"
                                                        style="min-width: 52px;"
                                                        onchange="updateCart(1, this.value)" />
@@ -69,7 +69,7 @@
 
                                     <!-- Price + Remove -->
                                     <div class="text-end flex-shrink-0 d-flex flex-column justify-content-between align-self-stretch">
-                                        <span class="fw-bold" style="font-size: 0.9rem;">$19.99</span>
+                                        <span class="fw-bold" style="font-size: 0.9rem;">@((item.Count * item.Price).ToString("c"))</span>
                                         <a href="#" class="text-danger text-decoration-none d-inline-flex align-items-center gap-1" style="font-size: 0.7rem;">
                                             <i class="bi bi-trash3"></i> Remove
                                         </a>
@@ -140,7 +140,7 @@
                         <!-- Total bar -->
                         <div class="d-flex justify-content-between align-items-center px-4 py-3 text-white" style="background: linear-gradient(to right, #065f46, #282828, #191414);">
                             <span class="text-uppercase fw-semibold small">Total</span>
-                            <span class="fw-bold fs-5">$19.99</span>
+                            <span class="fw-bold fs-5">@Model.GetTotalPrice().ToString("c")</span>
                         </div>
 
                         <!-- Place Order -->

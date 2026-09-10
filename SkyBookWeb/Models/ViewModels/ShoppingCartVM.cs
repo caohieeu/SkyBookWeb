@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using SkyBookWeb.Application.Dtos;
 using SkyBookWeb.Core.Entities;
 
 namespace SkyBookWeb.Models.ViewModels
 {
     public class ShoppingCartVM
     {
-        public IEnumerable<ShoppingCart> ShoppingCartList { get; set; }
+        public IEnumerable<ShoppingCartDto> ShoppingCartList { get; set; }
         public OrderHeader OrderHeader { get; set; }
         public double GetTotalPrice()
         {

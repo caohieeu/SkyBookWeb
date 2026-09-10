@@ -1,6 +1,4 @@
-﻿using System.Runtime;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Identity;
 using SkyBookWeb.Application;
 using SkyBookWeb.Application.Implements;
 using SkyBookWeb.Application.Interfaces;
@@ -15,11 +13,14 @@ namespace SkyBookWeb.Extensions
     {
         public static void AddApplicationServices(this IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
+
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IShoppingCartService, ShoppingCartService>();
+            services.AddScoped<IUserIdentityService, UserIdentityService>();
 
             services.AddTransient<MappingProfiles.ProductMapping>();
 

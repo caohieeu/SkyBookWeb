@@ -11,6 +11,7 @@ namespace SkyBookWeb.Application
         {
             CreateMap<Product, ProductDto>()
                 .AfterMap<ProductMapping>();
+            CreateMap<ShoppingCart, ShoppingCartDto>();
         }
 
         public class ProductMapping : IMappingAction<Product, ProductDto>
