@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SkyBookWeb.Application.Interfaces;
+using System.Net.WebSockets;
 
 namespace SkyBookWeb.ViewComponents
 {
@@ -15,6 +16,8 @@ namespace SkyBookWeb.ViewComponents
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {
+            var a = _userIdentityService.GetUserId();
+            var b = User.Identity;
             return View(await _shoppingCartService
                 .GetCartCountAsync(_userIdentityService.GetUserId() ?? string.Empty));
         }

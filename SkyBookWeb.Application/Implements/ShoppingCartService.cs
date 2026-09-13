@@ -39,7 +39,13 @@ namespace SkyBookWeb.Application.Implements
 
         public async Task<int> GetCartCountAsync(string userId)
         {
-            var cartItems = await _shoppingCartRepository.GetAllAsync(x => x.ApplicationUserId == userId);
+            if(string.IsNullOrEmpty(userId))
+            {
+                return 0;
+            }
+
+            var spec = new ShoppingCartSpecification(userId: userId);
+            var cartItems = await _shoppingCartRepository.ListAsync(spec);
             return cartItems.Sum(x => x.Count);
         }
 
@@ -53,7 +59,8 @@ namespace SkyBookWeb.Application.Implements
 
         public async Task<ShoppingCart> AddToCartAsync(ShoppingCart shoppingCart)
         {
-            var spec = new ShoppingCartSpecification(productId: shoppingCart.ProductId);
+            var spec = new ShoppingCartSpecification(productId: shoppingCart.ProductId, 
+                userId: shoppingCart.ApplicationUserId);
             var exixstingItem = await _shoppingCartRepository.GetEntityWithSpec(spec);
             if (exixstingItem != null)
             {

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SkyBookWeb.Application;
 using SkyBookWeb.Core.Specifications;
+using System.Security.Claims;
 
 namespace SkyBookWeb.Areas.Customer.Controllers
 {

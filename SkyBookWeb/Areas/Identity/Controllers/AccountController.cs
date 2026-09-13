@@ -1,5 +1,6 @@
 ﻿using System.Reflection.PortableExecutable;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -116,6 +117,7 @@ namespace SkyBookWeb.Areas.Identity.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
+
             return RedirectToAction("Index", "Home", new { area = "Customer" });
         }
         public IActionResult AccessDenied()

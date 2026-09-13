@@ -2,9 +2,8 @@
 
 <div class="container py-4">
     <form method="post">
-        <input asp-for="Product.Id" hidden />
+        <input asp-for="@Model.ProductId" hidden />
         <div class="mb-3">
-            <!-- TODO: Add back link to Index page -->
             <a href="#" class="text-decoration-none text-secondary small fw-medium d-inline-flex align-items-center gap-1">
                 <i class="bi bi-arrow-left"></i> Back to all books
             </a>
@@ -12,7 +11,6 @@
 
         <div class="card border shadow-sm overflow-hidden">
             <div class="row g-0">
-                <!-- Image -->
                 <div class="col-lg-5 d-flex align-items-stretch" style="background: linear-gradient(135deg, #1e293b, #334155, #475569); min-height: 480px;">
                     <!-- TODO: Add conditional logic to display product image or placeholder -->
                     <div class="d-flex flex-column align-items-center justify-content-center w-100">
@@ -81,7 +79,6 @@
                     <div class="d-flex align-items-center gap-2">
                         <div class="input-group" style="width: 140px;">
                             <span class="input-group-text fw-semibold small" style="background: #17A34A; color: #fff;">Qty</span>
-                            <!-- TODO: Bind quantity input to model -->
                             <input asp-for="Count" type="number" class="form-control text-center fw-medium" />
                         </div>
                         <button type="submit" class="btn btn-accent flex-grow-1 fw-semibold py-2">

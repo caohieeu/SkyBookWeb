@@ -13,8 +13,6 @@ namespace SkyBookWeb.Extensions
     {
         public static void AddApplicationServices(this IServiceCollection services)
         {
-            services.AddHttpContextAccessor();
-
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ICategoryService, CategoryService>();
