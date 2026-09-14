@@ -8,7 +8,7 @@ using SkyBookWeb.Infrastructure.Data;
 
 namespace SkyBookWeb.Infrastructure.Repositories
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
+    public class GenericRepository<T, Tkey> : IGenericRepository<T, Tkey> where T : class
     {
         private readonly ApplicationDBContext _dbContext;
         private readonly ILoggerFactory _loggerFactory;
@@ -43,7 +43,7 @@ namespace SkyBookWeb.Infrastructure.Repositories
             }
             catch(Exception ex)
             {
-                var logger = _loggerFactory.CreateLogger<GenericRepository<T>>();
+                var logger = _loggerFactory.CreateLogger<GenericRepository<T, Tkey>>();
                 logger.LogError(ex, "Something went wrong with get data from db");
 
                 return Enumerable.Empty<T>();
@@ -65,7 +65,7 @@ namespace SkyBookWeb.Infrastructure.Repositories
             _dbContext.Remove(entity);
         }
 
-        public async Task<T> GetIdAsync(int id)
+        public async Task<T> GetIdAsync(Tkey id)
         {
             try
             {

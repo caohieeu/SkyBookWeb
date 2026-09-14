@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 using SkyBookWeb.Core.Entities;
 using SkyBookWeb.Core.Specifications;
 
 namespace SkyBookWeb.Core.Interfaces
 {
-    public interface IGenericRepository<T> where T : BaseEntity
+    public interface IGenericRepository<T, TKey> where T : BaseEntity, IEntity<TKey>
     {
         Task<bool> ExistAsync(Expression<Func<T, bool>> expression);
         Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, object>>? expression = null);
         Task<T> GetAsync(Expression<Func<T, bool>> expression);
-        Task<T> GetIdAsync(int id);
+        Task<T> GetIdAsync(TKey id);
         void Add(T entity);
         void Update(T entity);
         void Delete(T entity);

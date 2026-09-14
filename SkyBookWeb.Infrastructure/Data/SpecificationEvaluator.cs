@@ -1,10 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SkyBookWeb.Core.Entities;
 using SkyBookWeb.Core.Specifications;
 
 namespace SkyBookWeb.Infrastructure.Data
 {
-    public class SpecificationEvaluator<T> where T : BaseEntity
+    public class SpecificationEvaluator<T> where T : class
     {
         public static IQueryable<T> GetQuery(IQueryable<T> inputQuery, ISpecifications<T> spec)
         {

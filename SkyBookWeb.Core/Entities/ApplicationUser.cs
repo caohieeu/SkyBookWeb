@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
+using SkyBookWeb.Core.Interfaces;
 
 namespace SkyBookWeb.Core.Entities
 {
-    public class ApplicationUser : IdentityUser
+    public class ApplicationUser : IdentityUser, IEntity<string>
     {
         [Required]
         public string Name { get; set; } = string.Empty;
