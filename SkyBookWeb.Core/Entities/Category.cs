@@ -5,10 +5,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SkyBookWeb.Core.Interfaces;
 
 namespace SkyBookWeb.Core.Entities
 {
-    public class Category : BaseEntity
+    public class Category : BaseEntity, IEntity<int>
     {
         [Required(ErrorMessage = "Name is required")]
         [StringLength(100, ErrorMessage = "Maximum length of name is 100")]

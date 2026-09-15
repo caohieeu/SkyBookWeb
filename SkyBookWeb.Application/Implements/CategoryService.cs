@@ -8,7 +8,7 @@ namespace SkyBookWeb.Application.Implements
     public class CategoryService : ICategoryService
     {
         private readonly IUnitOfWork _unitOfWork;
-        public CategoryService(IGenericRepository<Category> categoryRepository,
+        public CategoryService(IGenericRepository<Category, int> categoryRepository,
             IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
@@ -16,14 +16,14 @@ namespace SkyBookWeb.Application.Implements
 
         public async Task<IEnumerable<Category>> GetCategoriesAsync()
         {
-            var categories = await _unitOfWork.Repository<Category>().GetAllAsync();
+            var categories = await _unitOfWork.Repository<Category, int>().GetAllAsync();
             return categories;
         }
 
         public async Task<ServiceResult<Category>> CreateAsync(Category category)
         {
             var isExisted = await _unitOfWork
-                    .Repository<Category>()
+                    .Repository<Category, int>()
                     .ExistAsync(c => c.Name.ToLower() == category.Name.ToLower());
 
             if (isExisted)
@@ -32,7 +32,7 @@ namespace SkyBookWeb.Application.Implements
             }
             else
             {
-                _unitOfWork.Repository<Category>().Add(category);
+                _unitOfWork.Repository<Category, int>().Add(category);
                 if (await _unitOfWork.Complete())
                 {
                     return ServiceResult<Category>.FromSuccess(category);
@@ -49,14 +49,14 @@ namespace SkyBookWeb.Application.Implements
                 return null;
 
             return _unitOfWork
-                .Repository<Category>()
+                .Repository<Category, int>()
                 .GetAsync(x => x.Id == id).Result;
         }
 
         public async Task<ServiceResult<Category>> UpdateAsync(Category category)
         {
             var isExist = await _unitOfWork
-                .Repository<Category>()
+                .Repository<Category, int>()
                 .ExistAsync(c => c.Id == category.Id);
 
             if (!isExist)
@@ -66,7 +66,7 @@ namespace SkyBookWeb.Application.Implements
             }
             else
             {
-                _unitOfWork.Repository<Category>().Update(category);
+                _unitOfWork.Repository<Category, int>().Update(category);
                 if (await _unitOfWork.Complete())
                 {
                     return ServiceResult<Category>.FromSuccess();
@@ -85,7 +85,7 @@ namespace SkyBookWeb.Application.Implements
                 return ServiceResult<Category>.FromFailure("Id can not be null");
 
             var currentCategory = await _unitOfWork
-                    .Repository<Category>()
+                    .Repository<Category, int>()
                     .GetAsync(c => c.Id == id);
 
             if (currentCategory == null)
@@ -93,7 +93,7 @@ namespace SkyBookWeb.Application.Implements
                 return ServiceResult<Category>.FromFailure("Deleting this category is invalid");
             }
 
-            _unitOfWork.Repository<Category>().Delete(currentCategory);
+            _unitOfWork.Repository<Category, int>().Delete(currentCategory);
             if (await _unitOfWork.Complete())
             {
                 return ServiceResult<Category>.FromSuccess(currentCategory);

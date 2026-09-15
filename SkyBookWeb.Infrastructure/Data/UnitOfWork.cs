@@ -30,24 +30,24 @@ namespace SkyBookWeb.Infrastructure.Data
         }
 
         public void Dispose()
-        {
+        {   
             _dbContext.Dispose();
         }
 
-        public IGenericRepository<TEntity> Repository<TEntity>() where TEntity : BaseEntity
+        public IGenericRepository<T, TKey> Repository<T, TKey>() where T : BaseEntity, IEntity<TKey>
         {
-            var Type = typeof(TEntity).Name;
+            var Type = typeof(T).Name;
             if(!_repositories.ContainsKey(Type))
             {
-                var typeGeneric = typeof(GenericRepository<>);
+                var typeGeneric = typeof(GenericRepository<,>);
                 var repositoryInstance = Activator.CreateInstance(
-                        typeGeneric.MakeGenericType(typeof(TEntity)),
+                        typeGeneric.MakeGenericType(typeof(T), typeof(TKey)),
                         _dbContext,
                         _loggerFactory
                     );
                 _repositories.Add(Type, repositoryInstance);
             }
-            return (IGenericRepository<TEntity>)_repositories[Type];
+            return (IGenericRepository<T, TKey>)_repositories[Type];
         }
     }
 }

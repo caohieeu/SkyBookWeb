@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using SkyBookWeb.Core.Interfaces;
 
 namespace SkyBookWeb.Core.Entities
 {   
-    public class ShoppingCart : BaseEntity
+    public class ShoppingCart : BaseEntity, IEntity<int>
     {
         public int ProductId { get; set; }
         [ForeignKey("ProductId")]

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using SkyBookWeb.Application.Interfaces;
 
-namespace SkyBookWeb.Application.Implements
+namespace SkyBookWeb.Infrastructure.Services
 {
     public class UserIdentityService : IUserIdentityService
     {

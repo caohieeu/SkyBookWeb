@@ -24,7 +24,7 @@ namespace SkyBookWeb.Models.ViewModels
         public string? City { get; set; }
         public string? State { get; set; }
         [DisplayName("Postal Code")]
-        public int? PostalCode { get; set; }
+        public string? PostalCode { get; set; }
         [DisplayName("Phone Number")]
         public string PhoneNumber { get; set; }
         public string? Role { get; set; }

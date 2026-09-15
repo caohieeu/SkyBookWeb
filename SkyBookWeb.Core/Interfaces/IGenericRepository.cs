@@ -4,7 +4,7 @@ using SkyBookWeb.Core.Specifications;
 
 namespace SkyBookWeb.Core.Interfaces
 {
-    public interface IGenericRepository<T, TKey> where T : BaseEntity, IEntity<TKey>
+    public interface IGenericRepository<T, TKey> where T : class, IEntity<TKey>
     {
         Task<bool> ExistAsync(Expression<Func<T, bool>> expression);
         Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, object>>? expression = null);

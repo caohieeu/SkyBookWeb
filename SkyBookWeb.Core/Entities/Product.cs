@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using SkyBookWeb.Core.Interfaces;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SkyBookWeb.Core.Entities
 {
-    public class Product :BaseEntity
+    public class Product : BaseEntity, IEntity<int>
     {
         [Required(ErrorMessage = "Title is required")]
         public string Title { get; set; } = string.Empty;

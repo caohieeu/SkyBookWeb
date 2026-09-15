@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SkyBookWeb.Application\SkyBookWeb.Application.csproj" />
     <ProjectReference Include="..\SkyBookWeb.Core\SkyBookWeb.Core.csproj" />
   </ItemGroup>
 

@@ -14,10 +14,10 @@ namespace SkyBookWeb.Application.Implements
 {
     public class ProductService : IProductService
     {
-        private readonly IGenericRepository<Product> _productRepository;
+        private readonly IGenericRepository<Product, int> _productRepository;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
-        public ProductService(IGenericRepository<Product> productRepository,
+        public ProductService(IGenericRepository<Product, int> productRepository,
             IMapper mapper, IUnitOfWork unitOfWork)
         {
             _productRepository = productRepository;
@@ -39,17 +39,17 @@ namespace SkyBookWeb.Application.Implements
             if (product.Id == 0)
             {
                 var isExisted = await _unitOfWork
-                        .Repository<Product>()
+                        .Repository<Product, int>()
                         .ExistAsync(c => c.Title.ToLower() == product.Title.ToLower());
                 if (isExisted)
                 {
                     return ServiceResult<Product>.FromFailure("This product name existed");
                 }
-                _unitOfWork.Repository<Product>().Add(product);
+                _unitOfWork.Repository<Product, int>().Add(product);
             }
             else
             {
-                _unitOfWork.Repository<Product>().Update(product);
+                _unitOfWork.Repository<Product, int>().Update(product);
             }
             if (await _unitOfWork.Complete())
             {
@@ -65,7 +65,7 @@ namespace SkyBookWeb.Application.Implements
                 return ServiceResult<Product>.FromFailure("Id can not be null");
 
             var currentProduct = await _unitOfWork
-                    .Repository<Product>()
+                    .Repository<Product, int>()
                     .GetAsync(c => c.Id == id);
 
             if (currentProduct == null)
@@ -73,7 +73,7 @@ namespace SkyBookWeb.Application.Implements
                 return ServiceResult<Product>.FromFailure("Deleting this product is invalid");
             }
 
-            _unitOfWork.Repository<Product>().Delete(currentProduct);
+            _unitOfWork.Repository<Product, int>().Delete(currentProduct);
             if (await _unitOfWork.Complete())
             {
                 return ServiceResult<Product>.FromSuccess(currentProduct);
@@ -91,7 +91,7 @@ namespace SkyBookWeb.Application.Implements
 
             var spec = new ProductWithSecification(new ProductSpecPrams() { Id = id, IncludeCategory = true });
             return await _unitOfWork
-                .Repository<Product>()
+                .Repository<Product, int>()
                 .GetEntityWithSpec(spec);
         }
     }

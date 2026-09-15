@@ -6,6 +6,7 @@ using SkyBookWeb.Core.Entities;
 using SkyBookWeb.Core.Interfaces;
 using SkyBookWeb.Infrastructure.Data;
 using SkyBookWeb.Infrastructure.Repositories;
+using SkyBookWeb.Infrastructure.Services;
 
 namespace SkyBookWeb.Extensions
 {
@@ -13,12 +14,13 @@ namespace SkyBookWeb.Extensions
     {
         public static void AddApplicationServices(this IServiceCollection services)
         {
-            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IShoppingCartService, ShoppingCartService>();
             services.AddScoped<IUserIdentityService, UserIdentityService>();
+            services.AddScoped<IApplicationUserService, ApplicationUserService>();
 
             services.AddTransient<MappingProfiles.ProductMapping>();
 

@@ -16,23 +16,37 @@ namespace SkyBookWeb.Areas.Customer.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IShoppingCartService _shoppingCartService;
         private readonly IUserIdentityService _userIdentityService;
+        private readonly IApplicationUserService _applicationUserService;
         public CartController(ILogger<HomeController> logger, 
             IShoppingCartService shoppingCartService,
-            IUserIdentityService userIdentityService)
+            IUserIdentityService userIdentityService,
+            IApplicationUserService applicationUserService)
         {
             _logger = logger;
             _shoppingCartService = shoppingCartService;
             _userIdentityService = userIdentityService;
+            _applicationUserService = applicationUserService;
         }
 
         public async Task<IActionResult> Index()
         {
-            var cartItems = await _shoppingCartService.GetUserCartItemsAsync(_userIdentityService.GetUserId());
+            var userId = _userIdentityService.GetUserId();
+            var cartItems = await _shoppingCartService.GetUserCartItemsAsync(userId);
+            var user = await _applicationUserService.GetUserByIdAsync(userId);
 
             ShoppingCartVM shoppingCartVM = new ShoppingCartVM
             {
                 ShoppingCartList = cartItems,
-                OrderHeader = new()
+                OrderHeader =
+                {
+                    ApplicationUser = user,
+                    ApplicationUserId = userId,
+                    PhoneNumber = user.PhoneNumber,
+                    StreetAddress = user.StreetAddress,
+                    City = user.City,
+                    State = user.State,
+                    PostalCode = user.PostalCode
+                }
             };
 
             return View(shoppingCartVM);

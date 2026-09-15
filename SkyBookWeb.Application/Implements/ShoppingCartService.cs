@@ -9,9 +9,9 @@ namespace SkyBookWeb.Application.Implements
 {
     public class ShoppingCartService : IShoppingCartService
     {
-        private readonly IGenericRepository<ShoppingCart> _shoppingCartRepository;
+        private readonly IGenericRepository<ShoppingCart, int> _shoppingCartRepository;
         private readonly IMapper _mapper;
-        public ShoppingCartService(IGenericRepository<ShoppingCart> shoppingCartRepository,
+        public ShoppingCartService(IGenericRepository<ShoppingCart, int> shoppingCartRepository,
             IMapper mapper)
         {
             _shoppingCartRepository = shoppingCartRepository;

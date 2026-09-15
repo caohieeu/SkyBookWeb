@@ -12,7 +12,7 @@ using SkyBookWeb.Infrastructure.Data;
 namespace SkyBookWeb.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20260908064812_initDB")]
+    [Migration("20260915090946_initDB")]
     partial class initDB
     {
         /// <inheritdoc />
@@ -207,8 +207,8 @@ namespace SkyBookWeb.Infrastructure.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("PostalCode")
-                        .HasColumnType("int");
+                    b.Property<string>("PostalCode")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");

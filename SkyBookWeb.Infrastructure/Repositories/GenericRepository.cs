@@ -8,7 +8,7 @@ using SkyBookWeb.Infrastructure.Data;
 
 namespace SkyBookWeb.Infrastructure.Repositories
 {
-    public class GenericRepository<T, Tkey> : IGenericRepository<T, Tkey> where T : class
+    public class GenericRepository<T, Tkey> : IGenericRepository<T, Tkey> where T : BaseEntity, IEntity<Tkey>
     {
         private readonly ApplicationDBContext _dbContext;
         private readonly ILoggerFactory _loggerFactory;
