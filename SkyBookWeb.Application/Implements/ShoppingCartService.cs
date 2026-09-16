@@ -92,5 +92,15 @@ namespace SkyBookWeb.Application.Implements
 
             await _shoppingCartRepository.SaveChangeAsync();
         }
+
+        public async Task RemoveCartItemAsync(int cartId)
+        {
+            var cart = await _shoppingCartRepository.GetIdAsync(cartId);
+            if(cart != null)
+            {
+                _shoppingCartRepository.Delete(cart);
+                await _shoppingCartRepository.SaveChangeAsync();
+            }
+        }
     }
 }

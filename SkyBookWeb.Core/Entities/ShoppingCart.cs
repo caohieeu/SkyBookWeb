@@ -24,8 +24,8 @@ namespace SkyBookWeb.Core.Entities
             get
             {
                 if (Count <= 0) return 0;
-                else if (Count < 50) return Product.Price;
-                else if (Count < 100) return Product.Price50;
+                else if (Count <= 50) return Product.Price;
+                else if (Count <= 100) return Product.Price50;
                 else return Product.Price100;
             }
         }
